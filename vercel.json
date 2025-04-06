@@ -12,13 +12,7 @@
   "rewrites": [
     {
       "source": "/assets/:path*",
-      "headers": [
-        {
-          "key": "cache-control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ],
-      "continue": true
+      "destination": "/assets/:path*"
     },
     {
       "source": "/(.*)",
@@ -26,6 +20,15 @@
     }
   ],
   "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "cache-control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
     {
       "source": "/(.*).css",
       "headers": [
