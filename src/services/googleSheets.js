@@ -1,7 +1,5 @@
-import { Question, Sheet } from '../types';
-
-const SPREADSHEET_ID = process.env.VITE_SPREADSHEET_ID;
-const API_KEY = process.env.VITE_GOOGLE_API_KEY;
+const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const BASE_URL = 'https://sheets.googleapis.com/v4/spreadsheets';
 
 export const getSheets = async () => {
@@ -25,7 +23,7 @@ export const getSheets = async () => {
 
     const data = await response.json();
     console.log('Sheets data:', data);
-    return data.sheets.map((sheet: any) => ({
+    return data.sheets.map((sheet) => ({
       id: sheet.properties.sheetId,
       title: sheet.properties.title
     }));
@@ -35,7 +33,7 @@ export const getSheets = async () => {
   }
 };
 
-export const getQuestionsFromSheet = async (sheetName: string) => {
+export const getQuestionsFromSheet = async (sheetName) => {
   try {
     console.log('Fetching questions from sheet:', sheetName);
     const url = `${BASE_URL}/${SPREADSHEET_ID}/values/${encodeURIComponent(sheetName)}!A2:B1000?key=${API_KEY}`;
@@ -56,7 +54,7 @@ export const getQuestionsFromSheet = async (sheetName: string) => {
 
     const data = await response.json();
     console.log('Questions data:', data);
-    return data.values?.map(([question, answer]: [string, string]) => ({
+    return data.values?.map(([question, answer]) => ({
       question,
       answer
     })) || [];
