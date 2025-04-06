@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -29,6 +29,11 @@ export default function Quiz() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const formatQuestion = (text: string) => {
+    // ①, ②, ③, ④ 형식의 선지를 찾아서 앞에 줄바꿈 추가
+    return text.replace(/([①②③④])/g, '\n$1');
+  };
 
   const loadQuestions = async () => {
     if (!sheetName) {
@@ -189,19 +194,19 @@ export default function Quiz() {
           variant="body1" 
           sx={{ 
             mb: 2,
-            whiteSpace: 'pre-wrap',
+            whiteSpace: 'pre-line',
             fontSize: isMobile ? '1rem' : '1.1rem',
             color: '#103A5A'
           }}
         >
-          {currentQuestion.question}
+          {formatQuestion(currentQuestion.question)}
         </Typography>
         {showAnswer && (
           <Typography 
             variant="body1" 
             sx={{ 
               fontWeight: 'bold',
-              whiteSpace: 'pre-wrap',
+              whiteSpace: 'pre-line',
               fontSize: isMobile ? '1rem' : '1.1rem',
               color: '#103A5A',
               bgcolor: '#103A5A10',
