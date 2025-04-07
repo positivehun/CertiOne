@@ -1,8 +1,23 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CssBaseline, Container, ThemeProvider, createTheme, Box, styled } from '@mui/material';
+import { CssBaseline, Container, ThemeProvider, createTheme, Box, styled, GlobalStyles } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SubjectList from './components/SubjectList';
 import Quiz from './components/Quiz';
+
+const globalStyles = {
+  'html, body': {
+    margin: 0,
+    padding: 0,
+    overflow: 'hidden',
+    width: '100vw',
+    height: '100vh'
+  },
+  '#root': {
+    width: '100vw',
+    height: '100vh',
+    overflow: 'hidden'
+  }
+};
 
 const theme = createTheme({
   palette: {
@@ -16,7 +31,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           maxWidth: '100% !important',
-          padding: '0 !important'
+          width: '100vw !important',
+          margin: '0 !important',
+          padding: '0 !important',
+          overflow: 'hidden'
         }
       }
     }
@@ -26,11 +44,11 @@ const theme = createTheme({
 const StyledContainer = styled(Container)({
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '100vh',
-  width: '100%',
+  width: '100vw',
+  height: '100vh',
   margin: 0,
   padding: 0,
-  maxWidth: '100% !important'
+  overflow: 'hidden'
 });
 
 const queryClient = new QueryClient();
@@ -40,6 +58,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <GlobalStyles styles={globalStyles} />
         <Router>
           <StyledContainer disableGutters>
             <Routes>

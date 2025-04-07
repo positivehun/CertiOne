@@ -148,7 +148,12 @@ export default function SubjectList() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        px: 2
+        px: 2,
+        width: '100vw',
+        position: 'fixed',
+        left: 0,
+        overflowY: 'auto',
+        overflowX: 'hidden'
       }}
     >
       <Box 
@@ -158,7 +163,8 @@ export default function SubjectList() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          height: '100%'
+          height: '100%',
+          position: 'relative'
         }}
       >
         <Box sx={{ 

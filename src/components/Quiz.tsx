@@ -262,7 +262,12 @@ const Quiz: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        px: 2
+        px: 2,
+        width: '100vw',  // 전체 화면 너비
+        position: 'fixed',  // 고정 위치
+        left: 0,  // 왼쪽 정렬
+        overflowY: 'auto',  // 세로 스크롤만 허용
+        overflowX: 'hidden'  // 가로 스크롤 방지
       }}
     >
       <Box 
@@ -273,7 +278,8 @@ const Quiz: React.FC = () => {
           flexDirection: 'column',
           alignItems: 'center',
           height: '100%',
-          pb: '80px'
+          pb: '80px',
+          position: 'relative'  // 상대 위치
         }}
       >
         <Box sx={{ 
