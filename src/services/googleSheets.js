@@ -43,19 +43,28 @@ export const getQuestionsFromSheet = async (sheetName) => {
     // 시트 이름에 특수문자가 있는 경우를 대비해 인코딩
     const encodedSheetName = encodeURIComponent(targetSheet);
     
+    console.log('Fetching questions from sheet:', targetSheet);
+    
     const response = await axios.get(
       `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodedSheetName}!A2:B1000?key=${API_KEY}`
     );
 
-    if (response.data.values) {
+    console.log('API Response:', response.data);
+
+    if (response.data.values && response.data.values.length > 0) {
       return response.data.values.map(([question, answer]) => ({
-        question,
-        answer
+        question: question || '',
+        answer: answer || ''
       }));
     }
+    
+    console.log('No questions found in sheet:', targetSheet);
     return [];
   } catch (error) {
     console.error('Error fetching questions:', error);
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+    }
     throw error;
   }
 }; 
