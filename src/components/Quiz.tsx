@@ -32,10 +32,25 @@ interface Question {
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   marginBottom: theme.spacing(3),
+  height: 'calc(100vh - 250px)',
   minHeight: '300px',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between'
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: '#f1f1f1',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: '#103A5A',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: '#0a2647',
+  }
 }));
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
@@ -174,8 +189,22 @@ const Quiz: React.FC = () => {
   const isMultipleChoiceQuestion = isMultipleChoice(currentQuestion.question);
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 3, pb: 10 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Box sx={{ 
+      maxWidth: 800, 
+      mx: 'auto', 
+      p: 3, 
+      pb: 10,
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 3,
+        flexShrink: 0
+      }}>
         <IconButton onClick={handleHome} sx={{ color: '#103A5A' }}>
           <HomeIcon />
         </IconButton>
@@ -185,82 +214,87 @@ const Quiz: React.FC = () => {
         <Box sx={{ width: 40 }} />
       </Box>
 
-      <Typography variant="h6" gutterBottom sx={{ color: '#103A5A' }}>
+      <Typography variant="h6" gutterBottom sx={{ 
+        color: '#103A5A',
+        flexShrink: 0
+      }}>
         문제 {currentQuestionIndex + 1} / {questions.length}
       </Typography>
 
       <StyledPaper>
-        <Typography variant="body1" sx={{ 
-          whiteSpace: 'pre-line', 
-          mb: 3,
-          fontSize: isMobile ? '1rem' : '1.1rem',
-          color: '#103A5A'
-        }}>
-          {formatQuestion(currentQuestion.question)}
-        </Typography>
+        <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+          <Typography variant="body1" sx={{ 
+            whiteSpace: 'pre-line', 
+            mb: 3,
+            fontSize: isMobile ? '1rem' : '1.1rem',
+            color: '#103A5A'
+          }}>
+            {formatQuestion(currentQuestion.question)}
+          </Typography>
 
-        {isMultipleChoiceQuestion ? (
-          <FormControl component="fieldset" sx={{ width: '100%' }}>
-            <RadioGroup
-              value={selectedAnswer}
-              onChange={(e) => setSelectedAnswer(e.target.value)}
-            >
-              {['①', '②', '③', '④'].map((option) => (
-                <FormControlLabel
-                  key={option}
-                  value={option}
-                  control={<Radio />}
-                  label={option}
-                  sx={{
-                    color: showAnswer && selectedAnswer === option
-                      ? isCorrect ? '#1976d2' : '#d32f2f'
-                      : 'inherit',
-                    fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal'
-                  }}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-        ) : (
-          <TextField
-            fullWidth
-            variant="outlined"
-            label="답안"
-            value={userAnswer}
-            onChange={(e) => setUserAnswer(e.target.value)}
-            disabled={showAnswer}
-            sx={{
-              '& .MuiInputBase-input': {
-                color: showAnswer
-                  ? isCorrect ? '#1976d2' : '#d32f2f'
-                  : 'inherit'
-              }
-            }}
-          />
-        )}
+          {isMultipleChoiceQuestion ? (
+            <FormControl component="fieldset" sx={{ width: '100%' }}>
+              <RadioGroup
+                value={selectedAnswer}
+                onChange={(e) => setSelectedAnswer(e.target.value)}
+              >
+                {['①', '②', '③', '④'].map((option) => (
+                  <FormControlLabel
+                    key={option}
+                    value={option}
+                    control={<Radio />}
+                    label={option}
+                    sx={{
+                      color: showAnswer && selectedAnswer === option
+                        ? isCorrect ? '#1976d2' : '#d32f2f'
+                        : 'inherit',
+                      fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal'
+                    }}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          ) : (
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="답안"
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              disabled={showAnswer}
+              sx={{
+                '& .MuiInputBase-input': {
+                  color: showAnswer
+                    ? isCorrect ? '#1976d2' : '#d32f2f'
+                    : 'inherit'
+                }
+              }}
+            />
+          )}
 
-        {showAnswer && (
-          <Box sx={{ mt: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
-            <Typography variant="body1" sx={{ 
-              color: '#103A5A',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}>
-              {isCorrect ? (
-                <>
-                  <CheckCircleIcon sx={{ color: '#1976d2' }} />
-                  정답입니다!
-                </>
-              ) : (
-                <>
-                  <CancelIcon sx={{ color: '#d32f2f' }} />
-                  정답: {currentQuestion.answer}
-                </>
-              )}
-            </Typography>
-          </Box>
-        )}
+          {showAnswer && (
+            <Box sx={{ mt: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
+              <Typography variant="body1" sx={{ 
+                color: '#103A5A',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1
+              }}>
+                {isCorrect ? (
+                  <>
+                    <CheckCircleIcon sx={{ color: '#1976d2' }} />
+                    정답입니다!
+                  </>
+                ) : (
+                  <>
+                    <CancelIcon sx={{ color: '#d32f2f' }} />
+                    정답: {currentQuestion.answer}
+                  </>
+                )}
+              </Typography>
+            </Box>
+          )}
+        </Box>
       </StyledPaper>
 
       <ButtonContainer>
