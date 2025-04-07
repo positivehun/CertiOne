@@ -233,7 +233,7 @@ export default function SubjectList() {
             퀴즈 시트 선택
           </Typography>
 
-          <FormControl sx={{ width: '100%', maxWidth: '400px', mb: 3 }}>
+          <FormControl sx={{ width: '100%', maxWidth: '600px', mb: 3 }}>
             <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
             <Select
               labelId="sheet-select-label"
@@ -273,7 +273,7 @@ export default function SubjectList() {
             variant="contained" 
             onClick={handleStartQuiz}
             disabled={!selectedSheet}
-            sx={{ width: '100%', maxWidth: '400px' }}
+            sx={{ width: '100%', maxWidth: '600px' }}
           >
             퀴즈 시작
           </SubjectButton>
