@@ -35,7 +35,10 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginBottom: theme.spacing(3),
   minHeight: 'calc(100vh - 250px)',
   height: 'calc(100vh - 250px)',
+  maxHeight: 'calc(100vh - 250px)',
   overflow: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
   '&::-webkit-scrollbar': {
     width: '8px',
   },
@@ -353,109 +356,116 @@ const Quiz: React.FC = () => {
               {formatQuestion(currentQuestion.question)}
             </Typography>
 
-            {isMultipleChoiceQuestion ? (
-              <FormControl component="fieldset" sx={{ width: '100%' }}>
-                <RadioGroup
-                  value={selectedAnswer}
-                  onChange={handleAnswerChange}
-                >
-                  {['①', '②', '③', '④'].map((marker, index) => {
-                    const option = currentQuestion.options?.[index] || `${marker}`;
-                    return (
-                      <FormControlLabel
-                        key={index}
-                        value={option}
-                        control={
-                          <Radio 
-                            sx={{
-                              color: '#103A5A',
-                              '&.Mui-checked': {
-                                color: showAnswer ? 
-                                  (selectedAnswer === option ? 
-                                    ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
-                                    : '#103A5A')
-                                  : '#103A5A',
+            <Box sx={{ 
+              minHeight: '300px',  // 최소 높이 설정
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start'
+            }}>
+              {isMultipleChoiceQuestion ? (
+                <FormControl component="fieldset" sx={{ width: '100%' }}>
+                  <RadioGroup
+                    value={selectedAnswer}
+                    onChange={handleAnswerChange}
+                  >
+                    {['①', '②', '③', '④'].map((marker, index) => {
+                      const option = currentQuestion.options?.[index] || `${marker}`;
+                      return (
+                        <FormControlLabel
+                          key={index}
+                          value={option}
+                          control={
+                            <Radio 
+                              sx={{
+                                color: '#103A5A',
+                                '&.Mui-checked': {
+                                  color: showAnswer ? 
+                                    (selectedAnswer === option ? 
+                                      ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
+                                      : '#103A5A')
+                                    : '#103A5A',
                               },
                             }}
                           />
-                        }
-                        label={
-                          <Typography sx={{ 
-                            color: showAnswer && selectedAnswer === option ? 
-                              ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
-                              : '#103A5A',
-                            fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal',
-                            fontSize: isMobile ? '1rem' : '1.1rem'
-                          }}>
-                            {option}
-                          </Typography>
-                        }
-                        sx={{
-                          mb: 2,
-                          '&:last-child': {
-                            mb: 0
                           }
-                        }}
-                      />
-                    );
-                  })}
-                </RadioGroup>
-              </FormControl>
-            ) : (
-              <TextField
-                fullWidth
-                variant="outlined"
-                value={selectedAnswer}
-                onChange={handleAnswerChange}
-                placeholder="답을 입력하세요"
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: '#103A5A',
+                          label={
+                            <Typography sx={{ 
+                              color: showAnswer && selectedAnswer === option ? 
+                                ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
+                                : '#103A5A',
+                              fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal',
+                              fontSize: isMobile ? '1rem' : '1.1rem'
+                            }}>
+                              {option}
+                            </Typography>
+                          }
+                          sx={{
+                            mb: 2,
+                            '&:last-child': {
+                              mb: 0
+                            }
+                          }}
+                        />
+                      );
+                    })}
+                  </RadioGroup>
+                </FormControl>
+              ) : (
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  value={selectedAnswer}
+                  onChange={handleAnswerChange}
+                  placeholder="답을 입력하세요"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#103A5A',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#103A5A',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#103A5A',
+                      },
+                      '& input': {
+                        fontSize: isMobile ? '1rem' : '1.1rem',
+                        color: showAnswer ? 
+                          (selectedAnswer === currentQuestion.answer ? '#1976d2' : '#d32f2f')
+                          : 'inherit'
+                      }
                     },
-                    '&:hover fieldset': {
-                      borderColor: '#103A5A',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#103A5A',
-                    },
-                    '& input': {
-                      fontSize: isMobile ? '1rem' : '1.1rem',
-                      color: showAnswer ? 
-                        (selectedAnswer === currentQuestion.answer ? '#1976d2' : '#d32f2f')
-                        : 'inherit'
-                    }
-                  },
-                }}
-              />
-            )}
-
-            {showAnswer && (
-              <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(16, 58, 90, 0.05)', borderRadius: 1 }}>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    color: isCorrect ? '#1976d2' : '#d32f2f',
-                    fontWeight: 'bold'
                   }}
-                >
-                  {isCorrect ? (
-                    <>
-                      <CheckCircleIcon />
-                      정답입니다!
-                    </>
-                  ) : (
-                    <>
-                      <CancelIcon />
-                      오답입니다. 정답: {currentQuestion.answer}
-                    </>
-                  )}
-                </Typography>
-              </Box>
-            )}
+                />
+              )}
+
+              {showAnswer && (
+                <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(16, 58, 90, 0.05)', borderRadius: 1 }}>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      color: isCorrect ? '#1976d2' : '#d32f2f',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {isCorrect ? (
+                      <>
+                        <CheckCircleIcon />
+                        정답입니다!
+                      </>
+                    ) : (
+                      <>
+                        <CancelIcon />
+                        오답입니다. 정답: {currentQuestion.answer}
+                      </>
+                    )}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           </Box>
         </StyledPaper>
       </Box>

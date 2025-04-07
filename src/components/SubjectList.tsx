@@ -234,50 +234,59 @@ export default function SubjectList() {
             퀴즈 시트 선택
           </Typography>
 
-          <FormControl sx={{ width: '100%', maxWidth: '600px', mb: 3 }}>
-            <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
-            <Select
-              labelId="sheet-select-label"
-              value={selectedSheet}
-              label="시트 선택"
-              onChange={(e) => setSelectedSheet(e.target.value)}
-              sx={{
-                width: '100%',
-                color: '#103A5A',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#103A5A'
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#103A5A'
-                },
-                '& .MuiSelect-select': {
-                  fontSize: isMobile ? '1rem' : '1.1rem'
-                }
-              }}
-            >
-              {availableSheets.map((sheet) => (
-                <MenuItem 
-                  key={sheet.id} 
-                  value={sheet.title} 
-                  sx={{ 
-                    color: '#103A5A',
+          <Box sx={{ 
+            width: '100%',
+            minHeight: '300px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}>
+            <FormControl sx={{ width: '100%', maxWidth: '600px', mb: 3 }}>
+              <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
+              <Select
+                labelId="sheet-select-label"
+                value={selectedSheet}
+                label="시트 선택"
+                onChange={(e) => setSelectedSheet(e.target.value)}
+                sx={{
+                  width: '100%',
+                  color: '#103A5A',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#103A5A'
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#103A5A'
+                  },
+                  '& .MuiSelect-select': {
                     fontSize: isMobile ? '1rem' : '1.1rem'
-                  }}
-                >
-                  {sheet.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                  }
+                }}
+              >
+                {availableSheets.map((sheet) => (
+                  <MenuItem 
+                    key={sheet.id} 
+                    value={sheet.title} 
+                    sx={{ 
+                      color: '#103A5A',
+                      fontSize: isMobile ? '1rem' : '1.1rem'
+                    }}
+                  >
+                    {sheet.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <SubjectButton 
-            variant="contained" 
-            onClick={handleStartQuiz}
-            disabled={!selectedSheet}
-            sx={{ width: '100%', maxWidth: '600px' }}
-          >
-            퀴즈 시작
-          </SubjectButton>
+            <SubjectButton 
+              variant="contained" 
+              onClick={handleStartQuiz}
+              disabled={!selectedSheet}
+              sx={{ width: '100%', maxWidth: '600px' }}
+            >
+              퀴즈 시작
+            </SubjectButton>
+          </Box>
         </Paper>
       </Box>
     </Container>
