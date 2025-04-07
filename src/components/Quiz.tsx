@@ -183,25 +183,28 @@ const Quiz: React.FC = () => {
       // 답을 처음 확인하는 경우
       setShowAnswer(true);
       const currentQuestion = questions[currentQuestionIndex];
-      const isAnswerCorrect = isMultipleChoice(currentQuestion.question)
-        ? selectedAnswer === currentQuestion.answer
-        : userAnswer.trim().toLowerCase() === currentQuestion.answer.trim().toLowerCase();
+      const isAnswerCorrect = selectedAnswer === currentQuestion.answer;
       setIsCorrect(isAnswerCorrect);
     }
   };
 
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedAnswer(e.target.value);
+    setShowAnswer(false); // 답을 변경하면 정답 확인 상태 초기화
+    setIsCorrect(null);
   };
 
   const getOptionColor = (option: string) => {
-    if (selectedAnswer === option) {
-      return '#103A5A';
-    } else if (showAnswer && option === questions[currentQuestionIndex].answer) {
-      return '#d32f2f';
-    } else {
+    if (!showAnswer) {
       return 'inherit';
     }
+    if (option === questions[currentQuestionIndex].answer) {
+      return '#1976d2'; // 정답은 파란색
+    }
+    if (option === selectedAnswer && option !== questions[currentQuestionIndex].answer) {
+      return '#d32f2f'; // 선택한 오답은 빨간색
+    }
+    return 'inherit';
   };
 
   const isAnswerChecked = selectedAnswer !== '';
@@ -361,10 +364,7 @@ const Quiz: React.FC = () => {
                         }
                         label={
                           <Typography sx={{ 
-                            color: showAnswer ? 
-                              option === currentQuestion.answer ? '#1976d2' : 
-                              option === selectedAnswer ? '#d32f2f' : 'inherit'
-                              : 'inherit',
+                            color: getOptionColor(option),
                             fontWeight: showAnswer && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
                             fontSize: isMobile ? '1rem' : '1.1rem'
                           }}>
