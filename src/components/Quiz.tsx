@@ -102,7 +102,16 @@ const Quiz: React.FC = () => {
   };
 
   const formatQuestion = (text: string) => {
-    return text.replace(/([①②③④])/g, '\n$1');
+    const [questionText, ...options] = text.split(/[①②③④]/);
+    
+    if (isMultipleChoice(text) && options.length > 0) {
+      currentQuestion.options = options.map((opt, index) => {
+        const markers = ['①', '②', '③', '④'];
+        return `${markers[index]}${opt}`;
+      });
+    }
+    
+    return questionText;
   };
 
   const loadQuestions = async () => {
@@ -334,37 +343,40 @@ const Quiz: React.FC = () => {
                   value={selectedAnswer}
                   onChange={handleAnswerChange}
                 >
-                  {currentQuestion.options?.map((option, index) => (
-                    <FormControlLabel
-                      key={index}
-                      value={option}
-                      control={
-                        <Radio 
-                          sx={{
-                            color: '#103A5A',
-                            '&.Mui-checked': {
+                  {['①', '②', '③', '④'].map((marker, index) => {
+                    const option = currentQuestion.options?.[index] || `${marker}`;
+                    return (
+                      <FormControlLabel
+                        key={index}
+                        value={option}
+                        control={
+                          <Radio 
+                            sx={{
                               color: '#103A5A',
-                            },
-                          }}
-                        />
-                      }
-                      label={
-                        <Typography sx={{ 
-                          color: getOptionColor(option),
-                          fontWeight: isAnswerChecked && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
-                          fontSize: isMobile ? '1rem' : '1.1rem'
-                        }}>
-                          {option}
-                        </Typography>
-                      }
-                      sx={{
-                        mb: 2,
-                        '&:last-child': {
-                          mb: 0
+                              '&.Mui-checked': {
+                                color: '#103A5A',
+                              },
+                            }}
+                          />
                         }
-                      }}
-                    />
-                  ))}
+                        label={
+                          <Typography sx={{ 
+                            color: getOptionColor(option),
+                            fontWeight: isAnswerChecked && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
+                            fontSize: isMobile ? '1rem' : '1.1rem'
+                          }}>
+                            {option}
+                          </Typography>
+                        }
+                        sx={{
+                          mb: 2,
+                          '&:last-child': {
+                            mb: 0
+                          }
+                        }}
+                      />
+                    );
+                  })}
                 </RadioGroup>
               </FormControl>
             ) : (
