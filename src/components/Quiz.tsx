@@ -117,12 +117,18 @@ const Quiz: React.FC = () => {
   };
 
   const handleCheckAnswer = () => {
-    setShowAnswer(true);
-    const currentQuestion = questions[currentQuestionIndex];
-    const isAnswerCorrect = isMultipleChoice(currentQuestion.question)
-      ? selectedAnswer === currentQuestion.answer
-      : userAnswer.trim().toLowerCase() === currentQuestion.answer.trim().toLowerCase();
-    setIsCorrect(isAnswerCorrect);
+    if (showAnswer) {
+      // 이미 답을 확인한 상태라면 다음 문제로 이동
+      handleNext();
+    } else {
+      // 답을 처음 확인하는 경우
+      setShowAnswer(true);
+      const currentQuestion = questions[currentQuestionIndex];
+      const isAnswerCorrect = isMultipleChoice(currentQuestion.question)
+        ? selectedAnswer === currentQuestion.answer
+        : userAnswer.trim().toLowerCase() === currentQuestion.answer.trim().toLowerCase();
+      setIsCorrect(isAnswerCorrect);
+    }
   };
 
   if (loading) {
@@ -281,7 +287,7 @@ const Quiz: React.FC = () => {
           fullWidth
           variant="contained"
           onClick={handleCheckAnswer}
-          disabled={showAnswer || (isMultipleChoiceQuestion ? !selectedAnswer : !userAnswer.trim())}
+          disabled={!showAnswer && (isMultipleChoiceQuestion ? !selectedAnswer : !userAnswer.trim())}
           sx={{ 
             bgcolor: '#103A5A',
             '&:hover': {
@@ -289,7 +295,7 @@ const Quiz: React.FC = () => {
             }
           }}
         >
-          정답 확인
+          {showAnswer ? '다음 문제' : '정답 확인'}
         </Button>
       </ButtonContainer>
     </Box>
