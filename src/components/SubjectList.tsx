@@ -28,6 +28,10 @@ const SubjectButton = styled(Button)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   backgroundColor: '#103A5A',
   color: 'white',
+  padding: '0 24px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   '&:hover': {
     backgroundColor: '#0a2647',
   },
@@ -37,6 +41,8 @@ const SubjectButton = styled(Button)(({ theme }) => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+    textAlign: 'center',
+    padding: '0 16px'
   }
 }));
 
@@ -157,7 +163,10 @@ export default function SubjectList() {
           mx: 'auto',
           p: 4,
           borderRadius: 2,
-          bgcolor: 'white'
+          bgcolor: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
         <Typography 
@@ -173,7 +182,7 @@ export default function SubjectList() {
           퀴즈 시트 선택
         </Typography>
 
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl fullWidth sx={{ mb: 3, maxWidth: '400px' }}>
           <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
           <Select
             labelId="sheet-select-label"
@@ -203,6 +212,7 @@ export default function SubjectList() {
           onClick={handleStartQuiz}
           disabled={!selectedSheet}
           fullWidth
+          sx={{ maxWidth: '400px' }}
         >
           퀴즈 시작
         </SubjectButton>
