@@ -212,13 +212,18 @@ const Quiz: React.FC = () => {
       py: 4,
       bgcolor: '#F8F7F4',
       minHeight: '100vh',
-      pb: '80px'
+      pb: '80px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
     }}>
       <Box sx={{ 
         display: 'flex', 
         flexDirection: 'column',
         alignItems: 'center',
-        mb: 4
+        mb: 4,
+        width: '100%',
+        maxWidth: '600px'
       }}>
         <Typography 
           variant={isMobile ? "h6" : "h5"} 
@@ -244,7 +249,7 @@ const Quiz: React.FC = () => {
         />
       </Box>
 
-      <StyledPaper elevation={3}>
+      <StyledPaper elevation={3} sx={{ width: '100%', maxWidth: '600px' }}>
         <Box sx={{ mb: 3 }}>
           <Typography 
             variant="h6" 
