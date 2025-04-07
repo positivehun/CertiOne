@@ -74,6 +74,10 @@ const Quiz: React.FC = () => {
     try {
       setLoading(true);
       const fetchedQuestions = await getQuestionsFromSheet(subject || '');
+      if (fetchedQuestions.length === 0) {
+        setError('이 과목에는 아직 문제가 없습니다.');
+        return;
+      }
       setQuestions(fetchedQuestions);
       setCurrentQuestionIndex(0);
       setSelectedAnswer('');
