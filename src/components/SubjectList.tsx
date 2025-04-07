@@ -54,6 +54,8 @@ export default function SubjectList() {
   const handleStartQuiz = () => {
     if (selectedSheet) {
       navigate(`/quiz/${encodeURIComponent(selectedSheet)}`);
+    } else {
+      setError('과목을 선택해주세요.');
     }
   };
 

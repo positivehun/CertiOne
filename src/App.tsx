@@ -24,7 +24,7 @@ function App() {
           <Container>
             <Routes>
               <Route path="/" element={<SubjectList />} />
-              <Route path="/quiz/:sheetName" element={<Quiz />} />
+              <Route path="/quiz/:subject" element={<Quiz />} />
             </Routes>
           </Container>
         </Router>
