@@ -139,7 +139,8 @@ export default function SubjectList() {
 
   return (
     <Container 
-      maxWidth={false}
+      maxWidth="lg"
+      disableGutters
       sx={{ 
         py: 4,
         bgcolor: '#F8F7F4',
