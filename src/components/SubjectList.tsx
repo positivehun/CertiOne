@@ -130,16 +130,17 @@ export default function SubjectList() {
         display: 'flex', 
         flexDirection: 'column',
         alignItems: 'center',
-        mb: 6
+        mb: 4
       }}>
         <Typography 
-          variant={isMobile ? "h4" : "h3"} 
+          variant={isMobile ? "h6" : "h5"} 
           component="h1" 
           sx={{ 
             fontWeight: 'bold',
             color: '#103A5A',
             mb: 2,
-            textAlign: 'center'
+            textAlign: 'center',
+            fontSize: isMobile ? '1rem' : '1.25rem'
           }}
         >
           자격증 문제를 한번에
@@ -149,9 +150,8 @@ export default function SubjectList() {
           src="/logo.png"
           alt="로고"
           sx={{
-            width: isMobile ? '120px' : '150px',
-            height: 'auto',
-            mb: 4
+            width: isMobile ? '100px' : '120px',
+            height: 'auto'
           }}
         />
       </Box>
@@ -166,7 +166,10 @@ export default function SubjectList() {
           bgcolor: 'white',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          minHeight: 'calc(100vh - 250px)',
+          height: 'calc(100vh - 250px)',
+          overflow: 'auto'
         }}
       >
         <Typography 

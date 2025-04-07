@@ -32,10 +32,8 @@ interface Question {
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   marginBottom: theme.spacing(3),
+  minHeight: 'calc(100vh - 250px)',
   height: 'calc(100vh - 250px)',
-  minHeight: '300px',
-  display: 'flex',
-  flexDirection: 'column',
   overflow: 'auto',
   '&::-webkit-scrollbar': {
     width: '8px',
@@ -60,8 +58,29 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   right: 0,
   padding: theme.spacing(2),
   backgroundColor: 'white',
-  boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)',
-  zIndex: 1000
+  boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
+  display: 'flex',
+  gap: theme.spacing(2),
+  justifyContent: 'space-between',
+  zIndex: 1000,
+  [theme.breakpoints.up('sm')]: {
+    maxWidth: '600px',
+    margin: '0 auto',
+    left: '50%',
+    transform: 'translateX(-50%)',
+  }
+}));
+
+const ActionButton = styled(Button)(({ theme }) => ({
+  flex: 1,
+  height: '48px',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+  borderRadius: '8px',
+  textTransform: 'none',
+  [theme.breakpoints.up('sm')]: {
+    maxWidth: '180px',
+  }
 }));
 
 const Quiz: React.FC = () => {
@@ -189,46 +208,68 @@ const Quiz: React.FC = () => {
   const isMultipleChoiceQuestion = isMultipleChoice(currentQuestion.question);
 
   return (
-    <Box sx={{ 
-      maxWidth: 800, 
-      mx: 'auto', 
-      p: 3, 
-      pb: 10,
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column'
+    <Container sx={{ 
+      py: 4,
+      bgcolor: '#F8F7F4',
+      minHeight: '100vh',
+      pb: '80px'
     }}>
       <Box sx={{ 
         display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        mb: 3,
-        flexShrink: 0
+        flexDirection: 'column',
+        alignItems: 'center',
+        mb: 4
       }}>
-        <IconButton onClick={handleHome} sx={{ color: '#103A5A' }}>
-          <HomeIcon />
-        </IconButton>
-        <Typography variant="h4" sx={{ color: '#103A5A' }}>
-          {decodeURIComponent(subject || '')}
+        <Typography 
+          variant={isMobile ? "h6" : "h5"} 
+          component="h1" 
+          sx={{ 
+            fontWeight: 'bold',
+            color: '#103A5A',
+            mb: 2,
+            textAlign: 'center',
+            fontSize: isMobile ? '1rem' : '1.25rem'
+          }}
+        >
+          {subject}
         </Typography>
-        <Box sx={{ width: 40 }} />
+        <Box 
+          component="img"
+          src="/logo.png"
+          alt="로고"
+          sx={{
+            width: isMobile ? '100px' : '120px',
+            height: 'auto'
+          }}
+        />
       </Box>
 
-      <Typography variant="h6" gutterBottom sx={{ 
-        color: '#103A5A',
-        flexShrink: 0
-      }}>
-        문제 {currentQuestionIndex + 1} / {questions.length}
-      </Typography>
+      <StyledPaper elevation={3}>
+        <Box sx={{ mb: 3 }}>
+          <Typography 
+            variant="h6" 
+            component="h2" 
+            gutterBottom
+            sx={{ 
+              color: '#103A5A',
+              fontWeight: 'bold',
+              textAlign: 'center'
+            }}
+          >
+            문제 {currentQuestionIndex + 1} / {questions.length}
+          </Typography>
+        </Box>
 
-      <StyledPaper>
-        <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
-          <Typography variant="body1" sx={{ 
-            whiteSpace: 'pre-line', 
-            mb: 3,
-            fontSize: isMobile ? '1rem' : '1.1rem',
-            color: '#103A5A'
-          }}>
+        <Box sx={{ mb: 4 }}>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              mb: 3,
+              whiteSpace: 'pre-line',
+              fontSize: isMobile ? '1rem' : '1.1rem',
+              lineHeight: 1.6
+            }}
+          >
             {formatQuestion(currentQuestion.question)}
           </Typography>
 
@@ -271,69 +312,27 @@ const Quiz: React.FC = () => {
               }}
             />
           )}
-
-          {showAnswer && (
-            <Box sx={{ mt: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
-              <Typography variant="body1" sx={{ 
-                color: '#103A5A',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1
-              }}>
-                {isCorrect ? (
-                  <>
-                    <CheckCircleIcon sx={{ color: '#1976d2' }} />
-                    정답입니다!
-                  </>
-                ) : (
-                  <>
-                    <CancelIcon sx={{ color: '#d32f2f' }} />
-                    정답: {currentQuestion.answer}
-                  </>
-                )}
-              </Typography>
-            </Box>
-          )}
         </Box>
       </StyledPaper>
 
       <ButtonContainer>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Button
-            variant="outlined"
-            onClick={handlePrevious}
-            disabled={currentQuestionIndex === 0}
-            startIcon={<ArrowBackIcon />}
-            sx={{ 
-              color: '#103A5A',
-              borderColor: '#103A5A',
-              '&:hover': {
-                borderColor: '#0a2647',
-                bgcolor: 'rgba(16, 58, 90, 0.04)'
-              }
-            }}
-          >
-            이전
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={handleNext}
-            disabled={currentQuestionIndex === questions.length - 1}
-            endIcon={<ArrowForwardIcon />}
-            sx={{ 
-              color: '#103A5A',
-              borderColor: '#103A5A',
-              '&:hover': {
-                borderColor: '#0a2647',
-                bgcolor: 'rgba(16, 58, 90, 0.04)'
-              }
-            }}
-          >
-            다음
-          </Button>
-        </Box>
-        <Button
-          fullWidth
+        <ActionButton
+          variant="contained"
+          onClick={handlePrevious}
+          disabled={currentQuestionIndex === 0}
+          sx={{ 
+            bgcolor: '#103A5A',
+            '&:hover': {
+              bgcolor: '#0a2647'
+            },
+            '&:disabled': {
+              bgcolor: '#103A5A80'
+            }
+          }}
+        >
+          이전
+        </ActionButton>
+        <ActionButton
           variant="contained"
           onClick={handleCheckAnswer}
           disabled={!showAnswer && (isMultipleChoiceQuestion ? !selectedAnswer : !userAnswer.trim())}
@@ -341,13 +340,32 @@ const Quiz: React.FC = () => {
             bgcolor: '#103A5A',
             '&:hover': {
               bgcolor: '#0a2647'
+            },
+            '&:disabled': {
+              bgcolor: '#103A5A80'
             }
           }}
         >
-          {showAnswer ? '다음 문제' : '정답 확인'}
-        </Button>
+          정답 확인
+        </ActionButton>
+        <ActionButton
+          variant="contained"
+          onClick={handleNext}
+          disabled={currentQuestionIndex === questions.length - 1}
+          sx={{ 
+            bgcolor: '#103A5A',
+            '&:hover': {
+              bgcolor: '#0a2647'
+            },
+            '&:disabled': {
+              bgcolor: '#103A5A80'
+            }
+          }}
+        >
+          다음
+        </ActionButton>
       </ButtonContainer>
-    </Box>
+    </Container>
   );
 };
 
