@@ -96,7 +96,20 @@ export default function SubjectList() {
   if (error) {
     return (
       <Container sx={{ py: 4, bgcolor: '#F8F7F4' }}>
-        <Alert severity="error">{error}</Alert>
+        <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
+        <Button
+          variant="contained"
+          onClick={() => navigate('/')}
+          fullWidth
+          sx={{
+            bgcolor: '#103A5A',
+            '&:hover': {
+              bgcolor: '#0a2647'
+            }
+          }}
+        >
+          홈으로 가기
+        </Button>
       </Container>
     );
   }
