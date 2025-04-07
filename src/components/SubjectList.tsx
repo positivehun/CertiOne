@@ -13,13 +13,32 @@ import {
   InputLabel,
   useTheme,
   useMediaQuery,
-  Paper
+  Paper,
+  styled
 } from '@mui/material';
 import { getSheets } from '../services/googleSheets';
 import { Sheet } from '../types';
 
 // 고정된 시트 ID
 const FIXED_SHEET_ID = '1lbdwRNzG30akrgbHx-DClXH6WS28hwEv2MWVGvNHIGs';
+
+const SubjectButton = styled(Button)(({ theme }) => ({
+  width: '100%',
+  height: '60px',
+  marginBottom: theme.spacing(2),
+  backgroundColor: '#103A5A',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: '#0a2647',
+  },
+  '& .MuiButton-label': {
+    width: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+  }
+}));
 
 export default function SubjectList() {
   const navigate = useNavigate();
@@ -166,26 +185,14 @@ export default function SubjectList() {
           </Select>
         </FormControl>
 
-        <Button 
+        <SubjectButton 
           variant="contained" 
           onClick={handleStartQuiz}
           disabled={!selectedSheet}
           fullWidth
-          sx={{ 
-            py: isMobile ? 1.5 : 2,
-            fontSize: isMobile ? '1rem' : '1.1rem',
-            fontWeight: 'bold',
-            bgcolor: '#103A5A',
-            '&:hover': {
-              bgcolor: '#0A2A3A'
-            },
-            '&:disabled': {
-              bgcolor: '#103A5A80'
-            }
-          }}
         >
           퀴즈 시작
-        </Button>
+        </SubjectButton>
       </Paper>
     </Container>
   );
