@@ -124,13 +124,18 @@ export default function SubjectList() {
     <Container sx={{ 
       py: 4,
       bgcolor: '#F8F7F4',
-      minHeight: '100vh'
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
     }}>
       <Box sx={{ 
         display: 'flex', 
         flexDirection: 'column',
         alignItems: 'center',
-        mb: 4
+        mb: 4,
+        width: '100%',
+        maxWidth: '600px'
       }}>
         <Typography 
           variant={isMobile ? "h6" : "h5"} 
@@ -159,8 +164,8 @@ export default function SubjectList() {
       <Paper 
         elevation={3}
         sx={{ 
-          maxWidth: 600,
-          mx: 'auto',
+          width: '100%',
+          maxWidth: '600px',
           p: 4,
           borderRadius: 2,
           bgcolor: 'white',
@@ -179,7 +184,8 @@ export default function SubjectList() {
           sx={{ 
             mb: 3,
             textAlign: 'center',
-            color: '#103A5A'
+            color: '#103A5A',
+            fontSize: isMobile ? '1rem' : '1.25rem'
           }}
         >
           퀴즈 시트 선택
@@ -199,11 +205,21 @@ export default function SubjectList() {
               },
               '&:hover .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#103A5A'
+              },
+              '& .MuiSelect-select': {
+                fontSize: isMobile ? '1rem' : '1.1rem'
               }
             }}
           >
             {availableSheets.map((sheet) => (
-              <MenuItem key={sheet.id} value={sheet.title} sx={{ color: '#103A5A' }}>
+              <MenuItem 
+                key={sheet.id} 
+                value={sheet.title} 
+                sx={{ 
+                  color: '#103A5A',
+                  fontSize: isMobile ? '1rem' : '1.1rem'
+                }}
+              >
                 {sheet.title}
               </MenuItem>
             ))}
