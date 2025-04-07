@@ -370,8 +370,9 @@ const Quiz: React.FC = () => {
                               color: '#103A5A',
                               '&.Mui-checked': {
                                 color: showAnswer ? 
-                                  (option === currentQuestion.answer ? '#1976d2' : 
-                                   option === selectedAnswer ? '#d32f2f' : '#103A5A')
+                                  (selectedAnswer === option && option === currentQuestion.answer ? '#1976d2' :
+                                   selectedAnswer === option ? '#d32f2f' : 
+                                   option === currentQuestion.answer ? '#1976d2' : '#103A5A')
                                   : '#103A5A',
                               },
                             }}
@@ -380,9 +381,9 @@ const Quiz: React.FC = () => {
                         label={
                           <Typography sx={{ 
                             color: showAnswer ? 
-                              (option === currentQuestion.answer || 
-                               (option === selectedAnswer && option === currentQuestion.answer) ? '#1976d2' : 
-                               option === selectedAnswer ? '#d32f2f' : 'inherit')
+                              (selectedAnswer === option && option === currentQuestion.answer ? '#1976d2' :
+                               selectedAnswer === option ? '#d32f2f' : 
+                               option === currentQuestion.answer ? '#1976d2' : 'inherit')
                               : 'inherit',
                             fontWeight: showAnswer && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
                             fontSize: isMobile ? '1rem' : '1.1rem'
