@@ -27,6 +27,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 interface Question {
   question: string;
   answer: string;
+  options?: string[];
 }
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -180,6 +181,22 @@ const Quiz: React.FC = () => {
     }
   };
 
+  const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedAnswer(e.target.value);
+  };
+
+  const getOptionColor = (option: string) => {
+    if (selectedAnswer === option) {
+      return '#103A5A';
+    } else if (showAnswer && option === questions[currentQuestionIndex].answer) {
+      return '#d32f2f';
+    } else {
+      return 'inherit';
+    }
+  };
+
+  const isAnswerChecked = selectedAnswer !== '';
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
@@ -208,117 +225,156 @@ const Quiz: React.FC = () => {
   const isMultipleChoiceQuestion = isMultipleChoice(currentQuestion.question);
 
   return (
-    <Container sx={{ 
-      py: 4,
-      bgcolor: '#F8F7F4',
-      minHeight: '100vh',
-      pb: '80px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
-      <Box sx={{ 
-        display: 'flex', 
+    <Container 
+      maxWidth={false}
+      sx={{ 
+        py: 4,
+        bgcolor: '#F8F7F4',
+        minHeight: '100vh',
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        mb: 4,
-        width: '100%',
-        maxWidth: '600px'
-      }}>
-        <Typography 
-          variant={isMobile ? "h6" : "h5"} 
-          component="h1" 
-          sx={{ 
-            fontWeight: 'bold',
-            color: '#103A5A',
-            mb: 2,
-            textAlign: 'center',
-            fontSize: isMobile ? '1rem' : '1.25rem'
-          }}
-        >
-          {subject}
-        </Typography>
-        <Box 
-          component="img"
-          src="/logo.png"
-          alt="로고"
-          sx={{
-            width: isMobile ? '100px' : '120px',
-            height: 'auto'
-          }}
-        />
-      </Box>
-
-      <StyledPaper elevation={3} sx={{ width: '100%', maxWidth: '600px' }}>
-        <Box sx={{ mb: 3 }}>
+        px: 2
+      }}
+    >
+      <Box 
+        sx={{ 
+          width: '100%',
+          maxWidth: '600px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          height: '100%',
+          pb: '80px'
+        }}
+      >
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          alignItems: 'center',
+          mb: 4
+        }}>
           <Typography 
-            variant="h6" 
-            component="h2" 
-            gutterBottom
+            variant={isMobile ? "h6" : "h5"} 
+            component="h1" 
             sx={{ 
-              color: '#103A5A',
               fontWeight: 'bold',
-              textAlign: 'center'
+              color: '#103A5A',
+              mb: 2,
+              textAlign: 'center',
+              fontSize: isMobile ? '1rem' : '1.25rem'
             }}
           >
-            문제 {currentQuestionIndex + 1} / {questions.length}
+            {subject}
           </Typography>
+          <Box 
+            component="img"
+            src="/logo.png"
+            alt="로고"
+            sx={{
+              width: isMobile ? '100px' : '120px',
+              height: 'auto'
+            }}
+          />
         </Box>
 
-        <Box sx={{ mb: 4 }}>
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              mb: 3,
-              whiteSpace: 'pre-line',
-              fontSize: isMobile ? '1rem' : '1.1rem',
-              lineHeight: 1.6
-            }}
-          >
-            {formatQuestion(currentQuestion.question)}
-          </Typography>
-
-          {isMultipleChoiceQuestion ? (
-            <FormControl component="fieldset" sx={{ width: '100%' }}>
-              <RadioGroup
-                value={selectedAnswer}
-                onChange={(e) => setSelectedAnswer(e.target.value)}
-              >
-                {['①', '②', '③', '④'].map((option) => (
-                  <FormControlLabel
-                    key={option}
-                    value={option}
-                    control={<Radio />}
-                    label={option}
-                    sx={{
-                      color: showAnswer && selectedAnswer === option
-                        ? isCorrect ? '#1976d2' : '#d32f2f'
-                        : 'inherit',
-                      fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal'
-                    }}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          ) : (
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="답안"
-              value={userAnswer}
-              onChange={(e) => setUserAnswer(e.target.value)}
-              disabled={showAnswer}
-              sx={{
-                '& .MuiInputBase-input': {
-                  color: showAnswer
-                    ? isCorrect ? '#1976d2' : '#d32f2f'
-                    : 'inherit'
-                }
+        <StyledPaper elevation={3} sx={{ width: '100%' }}>
+          <Box sx={{ mb: 3 }}>
+            <Typography 
+              variant="h6" 
+              component="h2" 
+              gutterBottom
+              sx={{ 
+                color: '#103A5A',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: isMobile ? '1rem' : '1.25rem'
               }}
-            />
-          )}
-        </Box>
-      </StyledPaper>
+            >
+              문제 {currentQuestionIndex + 1} / {questions.length}
+            </Typography>
+          </Box>
+
+          <Box sx={{ mb: 4 }}>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                mb: 3,
+                whiteSpace: 'pre-line',
+                fontSize: isMobile ? '1rem' : '1.1rem',
+                lineHeight: 1.6
+              }}
+            >
+              {formatQuestion(currentQuestion.question)}
+            </Typography>
+
+            {isMultipleChoiceQuestion ? (
+              <FormControl component="fieldset" sx={{ width: '100%' }}>
+                <RadioGroup
+                  value={selectedAnswer}
+                  onChange={handleAnswerChange}
+                >
+                  {currentQuestion.options?.map((option, index) => (
+                    <FormControlLabel
+                      key={index}
+                      value={option}
+                      control={
+                        <Radio 
+                          sx={{
+                            color: '#103A5A',
+                            '&.Mui-checked': {
+                              color: '#103A5A',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ 
+                          color: getOptionColor(option),
+                          fontWeight: isAnswerChecked && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
+                          fontSize: isMobile ? '1rem' : '1.1rem'
+                        }}>
+                          {option}
+                        </Typography>
+                      }
+                      sx={{
+                        mb: 2,
+                        '&:last-child': {
+                          mb: 0
+                        }
+                      }}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            ) : (
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={selectedAnswer}
+                onChange={handleAnswerChange}
+                placeholder="답을 입력하세요"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#103A5A',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#103A5A',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#103A5A',
+                    },
+                    '& input': {
+                      fontSize: isMobile ? '1rem' : '1.1rem'
+                    }
+                  },
+                }}
+              />
+            )}
+          </Box>
+        </StyledPaper>
+      </Box>
 
       <ButtonContainer>
         <ActionButton
@@ -340,7 +396,7 @@ const Quiz: React.FC = () => {
         <ActionButton
           variant="contained"
           onClick={handleCheckAnswer}
-          disabled={!showAnswer && (isMultipleChoiceQuestion ? !selectedAnswer : !userAnswer.trim())}
+          disabled={!selectedAnswer}
           sx={{ 
             bgcolor: '#103A5A',
             '&:hover': {

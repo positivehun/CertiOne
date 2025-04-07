@@ -121,121 +121,147 @@ export default function SubjectList() {
   }
 
   return (
-    <Container sx={{ 
-      py: 4,
-      bgcolor: '#F8F7F4',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
-      <Box sx={{ 
-        display: 'flex', 
+    <Container 
+      maxWidth={false}
+      sx={{ 
+        py: 4,
+        bgcolor: '#F8F7F4',
+        minHeight: '100vh',
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        mb: 4,
-        width: '100%',
-        maxWidth: '600px'
-      }}>
-        <Typography 
-          variant={isMobile ? "h6" : "h5"} 
-          component="h1" 
-          sx={{ 
-            fontWeight: 'bold',
-            color: '#103A5A',
-            mb: 2,
-            textAlign: 'center',
-            fontSize: isMobile ? '1rem' : '1.25rem'
-          }}
-        >
-          자격증 문제를 한번에
-        </Typography>
-        <Box 
-          component="img"
-          src="/logo.png"
-          alt="로고"
-          sx={{
-            width: isMobile ? '100px' : '120px',
-            height: 'auto'
-          }}
-        />
-      </Box>
-      
-      <Paper 
-        elevation={3}
+        px: 2
+      }}
+    >
+      <Box 
         sx={{ 
           width: '100%',
           maxWidth: '600px',
-          p: 4,
-          borderRadius: 2,
-          bgcolor: 'white',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          minHeight: 'calc(100vh - 250px)',
-          height: 'calc(100vh - 250px)',
-          overflow: 'auto'
+          height: '100%'
         }}
       >
-        <Typography 
-          variant={isMobile ? "h6" : "h5"} 
-          component="h2" 
-          gutterBottom
-          sx={{ 
-            mb: 3,
-            textAlign: 'center',
-            color: '#103A5A',
-            fontSize: isMobile ? '1rem' : '1.25rem'
-          }}
-        >
-          퀴즈 시트 선택
-        </Typography>
-
-        <FormControl fullWidth sx={{ mb: 3, maxWidth: '400px' }}>
-          <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
-          <Select
-            labelId="sheet-select-label"
-            value={selectedSheet}
-            label="시트 선택"
-            onChange={(e) => setSelectedSheet(e.target.value)}
-            sx={{
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          alignItems: 'center',
+          mb: 4
+        }}>
+          <Typography 
+            variant={isMobile ? "h6" : "h5"} 
+            component="h1" 
+            sx={{ 
+              fontWeight: 'bold',
               color: '#103A5A',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#103A5A'
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#103A5A'
-              },
-              '& .MuiSelect-select': {
-                fontSize: isMobile ? '1rem' : '1.1rem'
-              }
+              mb: 2,
+              textAlign: 'center',
+              fontSize: isMobile ? '1rem' : '1.25rem'
             }}
           >
-            {availableSheets.map((sheet) => (
-              <MenuItem 
-                key={sheet.id} 
-                value={sheet.title} 
-                sx={{ 
-                  color: '#103A5A',
-                  fontSize: isMobile ? '1rem' : '1.1rem'
-                }}
-              >
-                {sheet.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <SubjectButton 
-          variant="contained" 
-          onClick={handleStartQuiz}
-          disabled={!selectedSheet}
-          fullWidth
-          sx={{ maxWidth: '400px' }}
+            자격증 문제를 한번에
+          </Typography>
+          <Box 
+            component="img"
+            src="/logo.png"
+            alt="로고"
+            sx={{
+              width: isMobile ? '100px' : '120px',
+              height: 'auto'
+            }}
+          />
+        </Box>
+        
+        <Paper 
+          elevation={3}
+          sx={{ 
+            width: '100%',
+            p: 4,
+            borderRadius: 2,
+            bgcolor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            minHeight: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 250px)',
+            overflow: 'auto',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: '#f1f1f1',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#103A5A',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: '#0a2647',
+            }
+          }}
         >
-          퀴즈 시작
-        </SubjectButton>
-      </Paper>
+          <Typography 
+            variant={isMobile ? "h6" : "h5"} 
+            component="h2" 
+            gutterBottom
+            sx={{ 
+              mb: 3,
+              textAlign: 'center',
+              color: '#103A5A',
+              fontSize: isMobile ? '1rem' : '1.25rem'
+            }}
+          >
+            퀴즈 시트 선택
+          </Typography>
+
+          <FormControl sx={{ width: '100%', maxWidth: '400px', mb: 3 }}>
+            <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
+            <Select
+              labelId="sheet-select-label"
+              value={selectedSheet}
+              label="시트 선택"
+              onChange={(e) => setSelectedSheet(e.target.value)}
+              sx={{
+                width: '100%',
+                color: '#103A5A',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#103A5A'
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#103A5A'
+                },
+                '& .MuiSelect-select': {
+                  fontSize: isMobile ? '1rem' : '1.1rem'
+                }
+              }}
+            >
+              {availableSheets.map((sheet) => (
+                <MenuItem 
+                  key={sheet.id} 
+                  value={sheet.title} 
+                  sx={{ 
+                    color: '#103A5A',
+                    fontSize: isMobile ? '1rem' : '1.1rem'
+                  }}
+                >
+                  {sheet.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <SubjectButton 
+            variant="contained" 
+            onClick={handleStartQuiz}
+            disabled={!selectedSheet}
+            sx={{ width: '100%', maxWidth: '400px' }}
+          >
+            퀴즈 시작
+          </SubjectButton>
+        </Paper>
+      </Box>
     </Container>
   );
 } 
