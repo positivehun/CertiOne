@@ -102,16 +102,21 @@ const Quiz: React.FC = () => {
   };
 
   const formatQuestion = (text: string) => {
-    const [questionText, ...options] = text.split(/[①②③④]/);
+    // 문제 텍스트에서 선택지 부분을 분리
+    const [questionText, ...optionTexts] = text.split(/([①②③④])/g).filter(Boolean);
     
-    if (isMultipleChoice(text) && options.length > 0) {
-      currentQuestion.options = options.map((opt, index) => {
-        const markers = ['①', '②', '③', '④'];
-        return `${markers[index]}${opt}`;
-      });
+    // options 배열을 현재 문제 객체에 저장
+    if (isMultipleChoice(text) && optionTexts.length > 0) {
+      const options: string[] = [];
+      for (let i = 0; i < optionTexts.length; i += 2) {
+        if (optionTexts[i] && optionTexts[i + 1]) {
+          options.push(optionTexts[i] + optionTexts[i + 1].trim());
+        }
+      }
+      currentQuestion.options = options;
     }
     
-    return questionText;
+    return questionText.trim();
   };
 
   const loadQuestions = async () => {
@@ -183,7 +188,10 @@ const Quiz: React.FC = () => {
       // 답을 처음 확인하는 경우
       setShowAnswer(true);
       const currentQuestion = questions[currentQuestionIndex];
-      const isAnswerCorrect = selectedAnswer === currentQuestion.answer;
+      // 선택한 답에서 번호(①②③④)만 추출하여 비교
+      const selectedMarker = selectedAnswer.match(/[①②③④]/)?.[0] || '';
+      const correctMarker = currentQuestion.answer.match(/[①②③④]/)?.[0] || '';
+      const isAnswerCorrect = selectedMarker === correctMarker;
       setIsCorrect(isAnswerCorrect);
     }
   };
@@ -198,10 +206,14 @@ const Quiz: React.FC = () => {
     if (!showAnswer) {
       return 'inherit';
     }
-    if (option === questions[currentQuestionIndex].answer) {
+    const optionMarker = option.match(/[①②③④]/)?.[0] || '';
+    const correctMarker = questions[currentQuestionIndex].answer.match(/[①②③④]/)?.[0] || '';
+    const selectedMarker = selectedAnswer.match(/[①②③④]/)?.[0] || '';
+
+    if (optionMarker === correctMarker) {
       return '#1976d2'; // 정답은 파란색
     }
-    if (option === selectedAnswer && option !== questions[currentQuestionIndex].answer) {
+    if (optionMarker === selectedMarker && optionMarker !== correctMarker) {
       return '#d32f2f'; // 선택한 오답은 빨간색
     }
     return 'inherit';
