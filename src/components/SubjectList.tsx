@@ -86,14 +86,18 @@ export default function SubjectList() {
 
   if (loading) {
     return (
-      <Container sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh',
-        py: 4,
-        bgcolor: '#F8F7F4'
-      }}>
+      <Container 
+        maxWidth={false}
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '100vh',
+          py: 4,
+          bgcolor: '#F8F7F4',
+          px: 2
+        }}
+      >
         <CircularProgress sx={{ color: '#103A5A' }} />
       </Container>
     );
@@ -101,21 +105,34 @@ export default function SubjectList() {
 
   if (error) {
     return (
-      <Container sx={{ py: 4, bgcolor: '#F8F7F4' }}>
-        <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
-        <Button
-          variant="contained"
-          onClick={() => navigate('/')}
-          fullWidth
-          sx={{
-            bgcolor: '#103A5A',
-            '&:hover': {
-              bgcolor: '#0a2647'
-            }
-          }}
-        >
-          홈으로 가기
-        </Button>
+      <Container 
+        maxWidth={false}
+        sx={{ 
+          py: 4,
+          bgcolor: '#F8F7F4',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          px: 2
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: '600px' }}>
+          <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
+          <Button
+            variant="contained"
+            onClick={() => navigate('/')}
+            fullWidth
+            sx={{
+              bgcolor: '#103A5A',
+              '&:hover': {
+                bgcolor: '#0a2647'
+              }
+            }}
+          >
+            홈으로 가기
+          </Button>
+        </Box>
       </Container>
     );
   }

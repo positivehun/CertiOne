@@ -254,19 +254,39 @@ const Quiz: React.FC = () => {
           alignItems: 'center',
           mb: 4
         }}>
-          <Typography 
-            variant={isMobile ? "h6" : "h5"} 
-            component="h1" 
-            sx={{ 
-              fontWeight: 'bold',
-              color: '#103A5A',
-              mb: 2,
-              textAlign: 'center',
-              fontSize: isMobile ? '1rem' : '1.25rem'
-            }}
-          >
-            {subject}
-          </Typography>
+          <Box sx={{ 
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 2
+          }}>
+            <IconButton 
+              onClick={handleHome}
+              sx={{ 
+                color: '#103A5A',
+                '&:hover': {
+                  bgcolor: 'rgba(16, 58, 90, 0.04)'
+                }
+              }}
+            >
+              <HomeIcon />
+            </IconButton>
+            <Typography 
+              variant={isMobile ? "h6" : "h5"} 
+              component="h1" 
+              sx={{ 
+                fontWeight: 'bold',
+                color: '#103A5A',
+                textAlign: 'center',
+                fontSize: isMobile ? '1rem' : '1.25rem',
+                flex: 1
+              }}
+            >
+              {subject}
+            </Typography>
+            <Box sx={{ width: 40 }} /> {/* 좌우 대칭을 위한 빈 공간 */}
+          </Box>
           <Box 
             component="img"
             src="/logo.png"
