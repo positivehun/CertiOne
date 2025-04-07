@@ -203,7 +203,39 @@ export default function SubjectList() {
             alignItems: 'center',
             minHeight: 'calc(100vh - 250px)',
             height: 'calc(100vh - 250px)',
-            overflow: 'auto',
+            maxHeight: 'calc(100vh - 250px)',
+            overflow: 'hidden'
+          }}
+        >
+          <Box sx={{ 
+            height: '50px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb: 3
+          }}>
+            <Typography 
+              variant={isMobile ? "h6" : "h5"} 
+              component="h2" 
+              gutterBottom
+              sx={{ 
+                textAlign: 'center',
+                color: '#103A5A',
+                fontSize: isMobile ? '1rem' : '1.25rem',
+                mb: 0
+              }}
+            >
+              퀴즈 시트 선택
+            </Typography>
+          </Box>
+
+          <Box sx={{ 
+            width: '100%',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflowY: 'auto',
             '&::-webkit-scrollbar': {
               width: '8px',
             },
@@ -218,29 +250,6 @@ export default function SubjectList() {
             '&::-webkit-scrollbar-thumb:hover': {
               background: '#0a2647',
             }
-          }}
-        >
-          <Typography 
-            variant={isMobile ? "h6" : "h5"} 
-            component="h2" 
-            gutterBottom
-            sx={{ 
-              mb: 3,
-              textAlign: 'center',
-              color: '#103A5A',
-              fontSize: isMobile ? '1rem' : '1.25rem'
-            }}
-          >
-            퀴즈 시트 선택
-          </Typography>
-
-          <Box sx={{ 
-            width: '100%',
-            minHeight: '300px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
           }}>
             <FormControl sx={{ width: '100%', maxWidth: '600px', mb: 3 }}>
               <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>

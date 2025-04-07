@@ -327,7 +327,13 @@ const Quiz: React.FC = () => {
         </Box>
 
         <StyledPaper elevation={3} sx={{ width: '100%' }}>
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ 
+            mb: 3, 
+            height: '50px',  // 문제 번호 영역 높이 고정
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
             <Typography 
               variant="h6" 
               component="h2" 
@@ -336,31 +342,61 @@ const Quiz: React.FC = () => {
                 color: '#103A5A',
                 fontWeight: 'bold',
                 textAlign: 'center',
-                fontSize: isMobile ? '1rem' : '1.25rem'
+                fontSize: isMobile ? '1rem' : '1.25rem',
+                mb: 0
               }}
             >
               문제 {currentQuestionIndex + 1} / {questions.length}
             </Typography>
           </Box>
 
-          <Box sx={{ mb: 4 }}>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                mb: 3,
-                whiteSpace: 'pre-line',
-                fontSize: isMobile ? '1rem' : '1.1rem',
-                lineHeight: 1.6
-              }}
-            >
-              {formatQuestion(currentQuestion.question)}
-            </Typography>
+          <Box sx={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'calc(100% - 50px)'  // 전체 높이에서 문제 번호 영역 높이를 뺀 나머지
+          }}>
+            <Box sx={{ 
+              mb: 3,
+              maxHeight: '200px',  // 문제 텍스트 영역 최대 높이
+              overflowY: 'auto',
+              '&::-webkit-scrollbar': {
+                width: '8px',
+              },
+              '&::-webkit-scrollbar-track': {
+                background: '#f1f1f1',
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: '#103A5A',
+                borderRadius: '4px',
+              }
+            }}>
+              <Typography 
+                variant="body1" 
+                sx={{ 
+                  whiteSpace: 'pre-line',
+                  fontSize: isMobile ? '1rem' : '1.1rem',
+                  lineHeight: 1.6
+                }}
+              >
+                {formatQuestion(currentQuestion.question)}
+              </Typography>
+            </Box>
 
             <Box sx={{ 
-              minHeight: '300px',  // 최소 높이 설정
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start'
+              flex: 1,
+              overflowY: 'auto',
+              '&::-webkit-scrollbar': {
+                width: '8px',
+              },
+              '&::-webkit-scrollbar-track': {
+                background: '#f1f1f1',
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: '#103A5A',
+                borderRadius: '4px',
+              }
             }}>
               {isMultipleChoiceQuestion ? (
                 <FormControl component="fieldset" sx={{ width: '100%' }}>
