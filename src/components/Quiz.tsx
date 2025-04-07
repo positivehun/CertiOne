@@ -361,8 +361,11 @@ const Quiz: React.FC = () => {
                         }
                         label={
                           <Typography sx={{ 
-                            color: getOptionColor(option),
-                            fontWeight: isAnswerChecked && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
+                            color: showAnswer ? 
+                              option === currentQuestion.answer ? '#1976d2' : 
+                              option === selectedAnswer ? '#d32f2f' : 'inherit'
+                              : 'inherit',
+                            fontWeight: showAnswer && (option === currentQuestion.answer || option === selectedAnswer) ? 'bold' : 'normal',
                             fontSize: isMobile ? '1rem' : '1.1rem'
                           }}>
                             {option}
@@ -398,11 +401,41 @@ const Quiz: React.FC = () => {
                       borderColor: '#103A5A',
                     },
                     '& input': {
-                      fontSize: isMobile ? '1rem' : '1.1rem'
+                      fontSize: isMobile ? '1rem' : '1.1rem',
+                      color: showAnswer ? 
+                        selectedAnswer.trim().toLowerCase() === currentQuestion.answer.trim().toLowerCase() ? '#1976d2' : '#d32f2f'
+                        : 'inherit'
                     }
                   },
                 }}
               />
+            )}
+
+            {showAnswer && (
+              <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(16, 58, 90, 0.05)', borderRadius: 1 }}>
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    color: isCorrect ? '#1976d2' : '#d32f2f',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {isCorrect ? (
+                    <>
+                      <CheckCircleIcon />
+                      정답입니다!
+                    </>
+                  ) : (
+                    <>
+                      <CancelIcon />
+                      오답입니다. 정답: {currentQuestion.answer}
+                    </>
+                  )}
+                </Typography>
+              </Box>
             )}
           </Box>
         </StyledPaper>
@@ -439,7 +472,7 @@ const Quiz: React.FC = () => {
             }
           }}
         >
-          정답 확인
+          {showAnswer ? '다음 문제' : '정답 확인'}
         </ActionButton>
         <ActionButton
           variant="contained"
