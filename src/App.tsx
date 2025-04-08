@@ -44,11 +44,13 @@ const theme = createTheme({
 const StyledContainer = styled(Container)({
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'stretch',
   width: '100vw',
   height: '100vh',
   margin: 0,
   padding: 0,
-  overflow: 'hidden'
+  overflow: 'hidden',
+  backgroundColor: '#F8F7F4'
 });
 
 const queryClient = new QueryClient();

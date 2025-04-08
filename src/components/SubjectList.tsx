@@ -210,7 +210,8 @@ export default function SubjectList() {
             minHeight: 'calc(100vh - 250px)',
             height: 'calc(100vh - 250px)',
             maxHeight: 'calc(100vh - 250px)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            mt: 8
           }}
         >
           <Box sx={{ 
@@ -218,7 +219,7 @@ export default function SubjectList() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            mb: 3
+            mb: 4
           }}>
             <Typography 
               variant={isMobile ? "h6" : "h5"} 
@@ -227,11 +228,12 @@ export default function SubjectList() {
               sx={{ 
                 textAlign: 'center',
                 color: '#103A5A',
-                fontSize: isMobile ? '1rem' : '1.25rem',
+                fontSize: isMobile ? '1.1rem' : '1.35rem',
+                fontWeight: 'bold',
                 mb: 0
               }}
             >
-              퀴즈 시트 선택
+              시트 선택
             </Typography>
           </Box>
 

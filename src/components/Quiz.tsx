@@ -293,46 +293,53 @@ const Quiz: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: 2
+            mb: 2,
+            px: 4,
+            py: 2
           }}>
-            <IconButton 
+            <Box 
+              component="img"
+              src="/logo.png"
+              alt="로고"
               onClick={handleHome}
-              sx={{ 
-                color: '#103A5A',
+              sx={{
+                width: isMobile ? '80px' : '100px',
+                height: 'auto',
+                cursor: 'pointer',
                 '&:hover': {
-                  bgcolor: 'rgba(16, 58, 90, 0.04)'
+                  opacity: 0.8
                 }
               }}
-            >
-              <HomeIcon />
-            </IconButton>
+            />
             <Typography 
               variant={isMobile ? "h6" : "h5"} 
-              component="h1" 
               sx={{ 
-                fontWeight: 'bold',
                 color: '#103A5A',
-                textAlign: 'center',
+                fontWeight: 'bold',
                 fontSize: isMobile ? '1rem' : '1.25rem',
-                flex: 1
+                ml: 4
               }}
             >
               {subject}
             </Typography>
-            <Box sx={{ width: 40 }} /> {/* 좌우 대칭을 위한 빈 공간 */}
           </Box>
-          <Box 
-            component="img"
-            src="/logo.png"
-            alt="로고"
-            sx={{
-              width: isMobile ? '100px' : '120px',
-              height: 'auto'
-            }}
-          />
         </Box>
 
-        <StyledPaper elevation={3} sx={{ width: '100%' }}>
+        <Paper 
+          elevation={3}
+          sx={{ 
+            flex: 1,
+            p: 3,
+            borderRadius: 2,
+            bgcolor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: 'calc(100vh - 150px)',  // 높이 증가
+            height: 'calc(100vh - 150px)',     // 높이 증가
+            maxHeight: 'calc(100vh - 150px)',  // 높이 증가
+            overflow: 'hidden'
+          }}
+        >
           <Box sx={{ 
             mb: 3, 
             height: '50px',  // 문제 번호 영역 높이 고정
@@ -509,7 +516,7 @@ const Quiz: React.FC = () => {
               )}
             </Box>
           </Box>
-        </StyledPaper>
+        </Paper>
       </Box>
 
       <ButtonContainer>
