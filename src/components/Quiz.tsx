@@ -434,9 +434,10 @@ const Quiz: React.FC = () => {
                                       ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
                                       : '#103A5A')
                                     : '#103A5A',
-                              },
-                            }}
-                          />
+                                },
+                                padding: '4px'  // 라디오 버튼 자체의 패딩 줄임
+                              }}
+                            />
                           }
                           label={
                             <Typography sx={{ 
@@ -450,7 +451,9 @@ const Quiz: React.FC = () => {
                             </Typography>
                           }
                           sx={{
-                            mb: 2,
+                            mb: 1,  // 2에서 1로 줄임
+                            ml: 0,  // 왼쪽 마진 제거
+                            mr: 0,  // 오른쪽 마진 제거
                             '&:last-child': {
                               mb: 0
                             }
