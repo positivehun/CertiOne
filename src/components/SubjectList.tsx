@@ -221,7 +221,7 @@ export default function SubjectList() {
             alignItems: 'center',
             justifyContent: 'center',
             mb: 4,
-            mt: 8
+            mt: 2
           }}>
             <Typography 
               variant={isMobile ? "h6" : "h5"} 
@@ -246,7 +246,7 @@ export default function SubjectList() {
             flexDirection: 'column',
             alignItems: 'center',
             overflowY: 'auto',
-            pt: 4,
+            pt: 2,
             '&::-webkit-scrollbar': {
               width: '8px',
             },
