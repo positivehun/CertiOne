@@ -330,7 +330,7 @@ const Quiz: React.FC = () => {
           sx={{ 
             flex: 1,
             p: 3,
-            pt: 2,  // 상단 패딩 줄임
+            pt: 2,
             borderRadius: 2,
             bgcolor: 'white',
             display: 'flex',
@@ -338,7 +338,10 @@ const Quiz: React.FC = () => {
             minHeight: 'calc(100vh - 150px)',
             height: 'calc(100vh - 150px)',
             maxHeight: 'calc(100vh - 150px)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: '100%',  // 너비를 100%로 설정
+            maxWidth: '600px',  // 최대 너비를 600px로 제한
+            margin: '0 auto'  // 중앙 정렬
           }}
         >
           <Box sx={{ 
@@ -390,7 +393,10 @@ const Quiz: React.FC = () => {
                 sx={{ 
                   whiteSpace: 'pre-line',
                   fontSize: isMobile ? '1rem' : '1.1rem',
-                  lineHeight: 1.6
+                  lineHeight: 1.6,
+                  wordBreak: 'break-word',  // 긴 단어도 자동으로 줄바꿈
+                  width: '100%',  // 너비를 100%로 설정
+                  maxWidth: '100%'  // 최대 너비를 100%로 제한
                 }}
               >
                 {formatQuestion(currentQuestion.question)}
