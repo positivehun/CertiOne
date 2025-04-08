@@ -172,7 +172,7 @@ export default function SubjectList() {
           display: 'flex', 
           flexDirection: 'column',
           alignItems: 'center',
-          mb: 4
+          mb: 2
         }}>
           <Typography 
             variant={isMobile ? "h6" : "h5"} 
@@ -180,7 +180,7 @@ export default function SubjectList() {
             sx={{ 
               fontWeight: 'bold',
               color: '#103A5A',
-              mb: 2,
+              mb: 1,
               textAlign: 'center',
               fontSize: isMobile ? '1rem' : '1.25rem'
             }}
@@ -192,8 +192,9 @@ export default function SubjectList() {
             src="/logo.png"
             alt="로고"
             sx={{
-              width: isMobile ? '100px' : '120px',
-              height: 'auto'
+              width: isMobile ? '140px' : '180px',
+              height: 'auto',
+              clipPath: 'inset(2px 2px 2px 2px)'
             }}
           />
         </Box>
@@ -212,7 +213,7 @@ export default function SubjectList() {
             height: 'calc(100vh - 150px)',
             maxHeight: 'calc(100vh - 150px)',
             overflow: 'hidden',
-            mt: 4
+            mt: 2
           }}
         >
           <Box sx={{ 

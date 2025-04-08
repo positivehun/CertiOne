@@ -593,8 +593,8 @@ const Quiz: React.FC = () => {
         </ActionButton>
         <ActionButton
           variant="contained"
-          onClick={handleNext}
-          disabled={currentQuestionIndex === questions.length - 1}
+          onClick={currentQuestionIndex === questions.length - 1 ? handleHome : handleNext}
+          disabled={currentQuestionIndex === questions.length - 1 ? false : currentQuestionIndex === questions.length - 1}
           sx={{ 
             bgcolor: '#103A5A',
             '&:hover': {
@@ -605,7 +605,7 @@ const Quiz: React.FC = () => {
             }
           }}
         >
-          다음
+          {currentQuestionIndex === questions.length - 1 ? '다시풀기' : '다음'}
         </ActionButton>
       </ButtonContainer>
     </Container>
