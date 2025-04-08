@@ -90,6 +90,8 @@ const ActionButton = styled(Button)(({ theme }) => ({
 const Quiz: React.FC = () => {
   const { subject } = useParams<{ subject: string }>();
   const navigate = useNavigate();
+  const location = window.location;
+  const questionCount = parseInt(new URLSearchParams(location.search).get('count') || '10');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -132,7 +134,7 @@ const Quiz: React.FC = () => {
         return;
       }
 
-      console.log('Loading questions for subject:', subject);
+      console.log('Loading questions from sheet:', subject);
       const fetchedQuestions = await getQuestionsFromSheet(subject);
       
       if (fetchedQuestions.length === 0) {
@@ -140,8 +142,18 @@ const Quiz: React.FC = () => {
         return;
       }
 
-      console.log('Loaded questions:', fetchedQuestions);
-      setQuestions(fetchedQuestions);
+      // Fisher-Yates 알고리즘을 사용하여 문제 순서 섞기
+      const shuffledQuestions = [...fetchedQuestions];
+      for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+      }
+      
+      // 선택된 문제 수만큼만 가져오기
+      const selectedQuestions = shuffledQuestions.slice(0, questionCount);
+      
+      console.log(`Loaded and shuffled ${questionCount} questions:`, selectedQuestions);
+      setQuestions(selectedQuestions);
       setCurrentQuestionIndex(0);
       setSelectedAnswer('');
       setUserAnswer('');

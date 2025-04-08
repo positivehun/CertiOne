@@ -52,6 +52,7 @@ export default function SubjectList() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [availableSheets, setAvailableSheets] = useState<Sheet[]>([]);
   const [selectedSheet, setSelectedSheet] = useState<string>('');
+  const [selectedQuestionCount, setSelectedQuestionCount] = useState<number>(10);  // 기본값 10문제
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,7 +79,7 @@ export default function SubjectList() {
 
   const handleStartQuiz = () => {
     if (selectedSheet) {
-      navigate(`/quiz/${encodeURIComponent(selectedSheet)}`);
+      navigate(`/quiz/${encodeURIComponent(selectedSheet)}?count=${selectedQuestionCount}`);
     } else {
       setError('과목을 선택해주세요.');
     }
@@ -219,7 +220,8 @@ export default function SubjectList() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            mb: 4
+            mb: 4,
+            mt: 8
           }}>
             <Typography 
               variant={isMobile ? "h6" : "h5"} 
@@ -228,12 +230,12 @@ export default function SubjectList() {
               sx={{ 
                 textAlign: 'center',
                 color: '#103A5A',
-                fontSize: isMobile ? '1.1rem' : '1.35rem',
+                fontSize: isMobile ? '1.3rem' : '1.6rem',
                 fontWeight: 'bold',
                 mb: 0
               }}
             >
-              시트 선택
+              과목 선택
             </Typography>
           </Box>
 
@@ -244,6 +246,7 @@ export default function SubjectList() {
             flexDirection: 'column',
             alignItems: 'center',
             overflowY: 'auto',
+            pt: 4,
             '&::-webkit-scrollbar': {
               width: '8px',
             },
@@ -281,7 +284,7 @@ export default function SubjectList() {
                   }
                 }}
               >
-                <MenuItem value="" disabled>시트 선택</MenuItem>
+                <MenuItem value="" disabled>과목 선택</MenuItem>
                 {availableSheets.map((sheet) => (
                   <MenuItem 
                     key={sheet.id} 
@@ -297,14 +300,94 @@ export default function SubjectList() {
               </Select>
             </FormControl>
 
+            <Box sx={{ 
+              width: '100%', 
+              maxWidth: '600px', 
+              mb: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 2
+            }}>
+              <Button
+                variant="outlined"
+                onClick={() => setSelectedQuestionCount(prev => Math.max(10, prev - 10))}
+                sx={{
+                  minWidth: '40px',
+                  height: '40px',
+                  color: '#103A5A',
+                  borderColor: '#103A5A',
+                  fontSize: '1.5rem',
+                  padding: 0,
+                  '&:hover': {
+                    backgroundColor: 'rgba(16, 58, 90, 0.1)',
+                    borderColor: '#103A5A'
+                  }
+                }}
+              >
+                -
+              </Button>
+              <Typography
+                sx={{
+                  color: '#103A5A',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  minWidth: '100px',
+                  textAlign: 'center'
+                }}
+              >
+                {selectedQuestionCount}문제
+              </Typography>
+              <Button
+                variant="outlined"
+                onClick={() => setSelectedQuestionCount(prev => Math.min(100, prev + 10))}
+                sx={{
+                  minWidth: '40px',
+                  height: '40px',
+                  color: '#103A5A',
+                  borderColor: '#103A5A',
+                  fontSize: '1.5rem',
+                  padding: 0,
+                  '&:hover': {
+                    backgroundColor: 'rgba(16, 58, 90, 0.1)',
+                    borderColor: '#103A5A'
+                  }
+                }}
+              >
+                +
+              </Button>
+            </Box>
+
             <SubjectButton 
               variant="contained" 
               onClick={handleStartQuiz}
               disabled={!selectedSheet}
               sx={{ width: '100%', maxWidth: '600px' }}
             >
-              퀴즈 시작
+              문제풀기
             </SubjectButton>
+            <Typography
+              sx={{
+                color: '#103A5A',
+                fontSize: isMobile ? '1rem' : '1.1rem',
+                mt: 3,
+                textAlign: 'center',
+                opacity: 0.8
+              }}
+            >
+              문제 추가 및 과목추가 문의메일
+            </Typography>
+            <Typography
+              sx={{
+                color: '#103A5A',
+                fontSize: isMobile ? '1.1rem' : '1.2rem',
+                fontWeight: 'bold',
+                mt: 1,
+                textAlign: 'center'
+              }}
+            >
+              certionequest@gmail.com
+            </Typography>
           </Box>
         </Paper>
       </Box>
