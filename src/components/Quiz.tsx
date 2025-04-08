@@ -286,16 +286,16 @@ const Quiz: React.FC = () => {
           display: 'flex', 
           flexDirection: 'column',
           alignItems: 'center',
-          mb: 4
+          mb: 2
         }}>
           <Box sx={{ 
             width: '100%',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: 2,
+            mb: 1,
             px: 4,
-            py: 2
+            py: 1
           }}>
             <Box 
               component="img"
@@ -303,7 +303,7 @@ const Quiz: React.FC = () => {
               alt="로고"
               onClick={handleHome}
               sx={{
-                width: isMobile ? '80px' : '100px',
+                width: isMobile ? '60px' : '80px',
                 height: 'auto',
                 cursor: 'pointer',
                 '&:hover': {
@@ -330,19 +330,20 @@ const Quiz: React.FC = () => {
           sx={{ 
             flex: 1,
             p: 3,
+            pt: 2,  // 상단 패딩 줄임
             borderRadius: 2,
             bgcolor: 'white',
             display: 'flex',
             flexDirection: 'column',
-            minHeight: 'calc(100vh - 150px)',  // 높이 증가
-            height: 'calc(100vh - 150px)',     // 높이 증가
-            maxHeight: 'calc(100vh - 150px)',  // 높이 증가
+            minHeight: 'calc(100vh - 150px)',
+            height: 'calc(100vh - 150px)',
+            maxHeight: 'calc(100vh - 150px)',
             overflow: 'hidden'
           }}
         >
           <Box sx={{ 
-            mb: 3, 
-            height: '50px',  // 문제 번호 영역 높이 고정
+            mb: 2,  // 3에서 2로 줄임
+            height: '40px',  // 50px에서 40px로 줄임
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
