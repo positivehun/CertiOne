@@ -207,11 +207,11 @@ export default function SubjectList() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            minHeight: 'calc(100vh - 250px)',
-            height: 'calc(100vh - 250px)',
-            maxHeight: 'calc(100vh - 250px)',
+            minHeight: 'calc(100vh - 150px)',
+            height: 'calc(100vh - 150px)',
+            maxHeight: 'calc(100vh - 150px)',
             overflow: 'hidden',
-            mt: 8
+            mt: 4
           }}
         >
           <Box sx={{ 
@@ -260,26 +260,28 @@ export default function SubjectList() {
             }
           }}>
             <FormControl sx={{ width: '100%', maxWidth: '600px', mb: 3 }}>
-              <InputLabel id="sheet-select-label" sx={{ color: '#103A5A' }}>시트 선택</InputLabel>
               <Select
-                labelId="sheet-select-label"
                 value={selectedSheet}
-                label="시트 선택"
                 onChange={(e) => setSelectedSheet(e.target.value)}
+                displayEmpty
                 sx={{
                   width: '100%',
                   color: '#103A5A',
                   '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#103A5A'
+                    borderColor: '#103A5A',
+                    top: 0,
+                    legend: { display: 'none' }
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
                     borderColor: '#103A5A'
                   },
                   '& .MuiSelect-select': {
-                    fontSize: isMobile ? '1rem' : '1.1rem'
+                    fontSize: isMobile ? '1rem' : '1.1rem',
+                    padding: '14px'
                   }
                 }}
               >
+                <MenuItem value="" disabled>시트 선택</MenuItem>
                 {availableSheets.map((sheet) => (
                   <MenuItem 
                     key={sheet.id} 

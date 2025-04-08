@@ -476,10 +476,23 @@ const Quiz: React.FC = () => {
                   value={selectedAnswer}
                   onChange={handleAnswerChange}
                   placeholder="답을 입력하세요"
+                  label=""
+                  InputLabelProps={{
+                    shrink: false,
+                    style: { display: 'none' }
+                  }}
+                  InputProps={{
+                    notched: false,
+                    style: { 
+                      fontSize: isMobile ? '1rem' : '1.1rem',
+                    }
+                  }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
                         borderColor: '#103A5A',
+                        top: 0,  // 라벨을 위한 공간 제거
+                        legend: { display: 'none' }  // 라벨 공간 완전히 제거
                       },
                       '&:hover fieldset': {
                         borderColor: '#103A5A',
@@ -491,9 +504,13 @@ const Quiz: React.FC = () => {
                         fontSize: isMobile ? '1rem' : '1.1rem',
                         color: showAnswer ? 
                           (selectedAnswer === currentQuestion.answer ? '#1976d2' : '#d32f2f')
-                          : 'inherit'
+                          : 'inherit',
+                        padding: '14px'  // 패딩 조정
                       }
                     },
+                    '& .MuiInputLabel-root': {
+                      display: 'none'  // 라벨 완전히 숨기기
+                    }
                   }}
                 />
               )}
