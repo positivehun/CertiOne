@@ -56,7 +56,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
-  position: 'sticky',
+  position: 'fixed',
   bottom: 0,
   left: 0,
   right: 0,
@@ -68,8 +68,11 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   zIndex: 1000,
   width: '100%',
-  maxWidth: '600px',
-  margin: '0 auto'
+  [theme.breakpoints.up('sm')]: {
+    left: '50%',
+    transform: 'translateX(-50%)',
+    maxWidth: '600px'
+  }
 }));
 
 const ActionButton = styled(Button)(({ theme }) => ({
@@ -422,7 +425,7 @@ const Quiz: React.FC = () => {
           position: 'relative',
           margin: '0 auto',
           px: 0,
-          pb: { xs: 2, sm: 3 }
+          pb: { xs: '80px', sm: '100px' }
         }}
       >
         <Box sx={{ 
@@ -482,7 +485,7 @@ const Quiz: React.FC = () => {
             width: '100%',
             maxWidth: '600px',
             margin: '0 auto',
-            mb: { xs: 1, sm: 2 },
+            mb: { xs: 2, sm: 3 },
             minHeight: { xs: 'calc(100vh - 200px)', sm: 'calc(100vh - 280px)' }
           }}
         >
