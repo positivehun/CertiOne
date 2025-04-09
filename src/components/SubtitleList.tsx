@@ -16,14 +16,14 @@ const SubtitleList: React.FC = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'stretch',
-      p: 2
+      p: 1
     }}>
       <Box sx={{ 
         width: '100%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        mb: 4
+        mb: 2
       }}>
         <Box 
           component="img"

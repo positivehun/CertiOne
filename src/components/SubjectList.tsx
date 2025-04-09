@@ -143,13 +143,13 @@ export default function SubjectList() {
       maxWidth="lg"
       disableGutters
       sx={{ 
-        py: 4,
+        py: 0,
         bgcolor: '#F8F7F4',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        px: 2,
+        px: 0,
         width: '100vw',
         position: 'fixed',
         left: 0,
@@ -194,7 +194,7 @@ export default function SubjectList() {
             sx={{
               width: isMobile ? '140px' : '180px',
               height: 'auto',
-              clipPath: 'inset(2px 2px 2px 2px)'
+              clipPath: 'inset(10px 10px 10px 10px)'
             }}
           />
         </Box>
@@ -213,7 +213,7 @@ export default function SubjectList() {
             height: 'calc(100vh - 150px)',
             maxHeight: 'calc(100vh - 150px)',
             overflow: 'hidden',
-            mt: 2
+            mt: 0
           }}
         >
           <Box sx={{ 
@@ -221,8 +221,8 @@ export default function SubjectList() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            mb: 4,
-            mt: 2
+            mb: 0,
+            mt: 0
           }}>
             <Typography 
               variant={isMobile ? "h6" : "h5"} 
