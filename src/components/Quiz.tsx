@@ -104,6 +104,8 @@ const Quiz: React.FC = () => {
   const [userAnswer, setUserAnswer] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [showScore, setShowScore] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
 
   const isMultipleChoice = (question: string) => {
@@ -193,22 +195,35 @@ const Quiz: React.FC = () => {
   };
 
   const handleHome = () => {
+    setShowScore(false);
     navigate('/');
+  };
+
+  const handleRetry = () => {
+    setCorrectCount(0);
+    setShowScore(false);
+    loadQuestions();
   };
 
   const handleCheckAnswer = () => {
     if (showAnswer) {
-      // 이미 답을 확인한 상태라면 다음 문제로 이동
-      handleNext();
+      // 이미 답을 확인한 상태라면
+      if (currentQuestionIndex === questions.length - 1) {
+        setShowScore(true); // 점수 보기 화면으로 전환
+      } else {
+        handleNext();
+      }
     } else {
       // 답을 처음 확인하는 경우
       setShowAnswer(true);
       const currentQuestion = questions[currentQuestionIndex];
-      // 선택한 답에서 번호(①②③④)만 추출하여 비교
       const selectedMarker = selectedAnswer.match(/[①②③④]/)?.[0] || '';
       const correctMarker = currentQuestion.answer.match(/[①②③④]/)?.[0] || '';
       const isAnswerCorrect = selectedMarker === correctMarker;
       setIsCorrect(isAnswerCorrect);
+      if (isAnswerCorrect) {
+        setCorrectCount(prev => prev + 1);
+      }
     }
   };
 
@@ -395,6 +410,113 @@ const Quiz: React.FC = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const isMultipleChoiceQuestion = isMultipleChoice(currentQuestion.question);
 
+  // 점수 보기 화면 렌더링
+  if (showScore) {
+    return (
+      <Container 
+        maxWidth="lg"
+        disableGutters
+        sx={{ 
+          py: { xs: 2, sm: 4 },
+          bgcolor: '#F8F7F4',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          px: { xs: 1, sm: 2 }
+        }}
+      >
+        <Box 
+          sx={{ 
+            width: '100%',
+            maxWidth: '600px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 3,
+            p: { xs: 2, sm: 3 }
+          }}
+        >
+          <Paper 
+            elevation={3}
+            sx={{ 
+              width: '100%',
+              p: { xs: 3, sm: 4 },
+              borderRadius: 2,
+              bgcolor: 'white',
+              textAlign: 'center'
+            }}
+          >
+            <Typography 
+              variant="h5" 
+              sx={{ 
+                color: '#103A5A',
+                fontWeight: 'bold',
+                fontSize: { xs: '1.5rem', sm: '1.8rem' },
+                mb: 3
+              }}
+            >
+              최종 점수
+            </Typography>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                color: '#103A5A',
+                fontWeight: 'bold',
+                fontSize: { xs: '2rem', sm: '2.5rem' },
+                mb: 2
+              }}
+            >
+              {Math.round((correctCount / questions.length) * 100)}점
+            </Typography>
+            <Typography 
+              sx={{ 
+                color: '#103A5A',
+                fontSize: { xs: '1.1rem', sm: '1.3rem' },
+                mb: 4
+              }}
+            >
+              총 {questions.length}문제 중 {correctCount}문제 정답
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+              <Button
+                variant="contained"
+                onClick={handleRetry}
+                sx={{
+                  bgcolor: '#103A5A',
+                  color: 'white',
+                  py: 1.5,
+                  px: 4,
+                  '&:hover': { bgcolor: '#0a2647' },
+                  fontSize: { xs: '1rem', sm: '1.1rem' }
+                }}
+              >
+                다시 풀기
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleHome}
+                sx={{
+                  color: '#103A5A',
+                  borderColor: '#103A5A',
+                  py: 1.5,
+                  px: 4,
+                  '&:hover': { 
+                    bgcolor: 'rgba(16, 58, 90, 0.1)',
+                    borderColor: '#103A5A'
+                  },
+                  fontSize: { xs: '1rem', sm: '1.1rem' }
+                }}
+              >
+                홈으로
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
+      </Container>
+    );
+  }
+
   return (
     <Container 
       maxWidth="lg"
@@ -565,56 +687,51 @@ const Quiz: React.FC = () => {
               }
             }}>
               {isMultipleChoiceQuestion ? (
-                <FormControl component="fieldset" sx={{ width: '100%' }}>
-                  <RadioGroup
-                    value={selectedAnswer}
-                    onChange={handleAnswerChange}
-                  >
-                    {['①', '②', '③', '④'].map((marker, index) => {
-                      const option = currentQuestion.options?.[index] || `${marker}`;
-                      return (
-                        <FormControlLabel
-                          key={index}
-                          value={option}
-                          control={
-                            <Radio 
-                              sx={{
-                                color: '#103A5A',
-                                '&.Mui-checked': {
-                                  color: showAnswer ? 
-                                    (selectedAnswer === option ? 
-                                      ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
-                                      : '#103A5A')
-                                    : '#103A5A',
-                                },
-                                padding: { xs: '2px', sm: '4px' }
-                              }}
-                            />
-                          }
-                          label={
-                            <Typography sx={{ 
-                              color: showAnswer && selectedAnswer === option ? 
-                                ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
-                                : '#103A5A',
-                              fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal',
-                              fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' }
-                            }}>
-                              {option}
-                            </Typography>
-                          }
-                          sx={{
-                            mb: { xs: 0.5, sm: 1 },
-                            ml: 0,
-                            mr: 0,
-                            '&:last-child': {
-                              mb: 0
-                            }
-                          }}
-                        />
-                      );
-                    })}
-                  </RadioGroup>
-                </FormControl>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {['①', '②', '③', '④'].map((marker, index) => {
+                    const option = currentQuestion.options?.[index] || `${marker}`;
+                    const isSelected = selectedAnswer === option;
+                    const isCorrectAnswer = showAnswer && (option.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '');
+                    const isWrongAnswer = showAnswer && isSelected && !isCorrectAnswer;
+
+                    return (
+                      <Button
+                        key={index}
+                        variant={isSelected ? "contained" : "outlined"}
+                        onClick={() => setSelectedAnswer(option)}
+                        disabled={showAnswer}
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'flex-start',
+                          textAlign: 'left',
+                          padding: { xs: '8px 16px', sm: '12px 20px' },
+                          color: showAnswer
+                            ? (isCorrectAnswer ? '#1976d2' : isWrongAnswer ? '#d32f2f' : '#103A5A')
+                            : (isSelected ? 'white' : '#103A5A'),
+                          backgroundColor: showAnswer
+                            ? 'transparent'
+                            : (isSelected ? '#103A5A' : 'transparent'),
+                          borderColor: showAnswer
+                            ? (isCorrectAnswer ? '#1976d2' : isWrongAnswer ? '#d32f2f' : '#103A5A')
+                            : '#103A5A',
+                          '&:hover': {
+                            backgroundColor: showAnswer
+                              ? 'transparent'
+                              : (isSelected ? '#103A5A' : 'rgba(16, 58, 90, 0.1)'),
+                            borderColor: showAnswer
+                              ? (isCorrectAnswer ? '#1976d2' : isWrongAnswer ? '#d32f2f' : '#103A5A')
+                              : '#103A5A'
+                          },
+                          fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                          fontWeight: isSelected || (showAnswer && isCorrectAnswer) ? 'bold' : 'normal',
+                          textTransform: 'none'
+                        }}
+                      >
+                        {option}
+                      </Button>
+                    );
+                  })}
+                </Box>
               ) : (
                 <TextField
                   fullWidth
@@ -730,7 +847,7 @@ const Quiz: React.FC = () => {
               fontSize: { xs: '0.9rem', sm: '1rem' }
             }}
           >
-            {showAnswer ? '다음 문제' : '정답 확인'}
+            {showAnswer ? (currentQuestionIndex === questions.length - 1 ? '점수 보기' : '다음 문제') : '정답 확인'}
           </ActionButton>
           <ActionButton
             variant="contained"
