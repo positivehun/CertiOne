@@ -56,10 +56,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
-  position: 'fixed',
+  position: 'sticky',
   bottom: 0,
-  left: 0,
-  right: 0,
   padding: theme.spacing(2),
   backgroundColor: 'white',
   boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
@@ -67,12 +65,9 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
   justifyContent: 'space-between',
   zIndex: 1000,
-  [theme.breakpoints.up('sm')]: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    left: '50%',
-    transform: 'translateX(-50%)',
-  }
+  width: '100%',
+  maxWidth: '600px',
+  margin: '0 auto'
 }));
 
 const ActionButton = styled(Button)(({ theme }) => ({
@@ -82,6 +77,8 @@ const ActionButton = styled(Button)(({ theme }) => ({
   fontWeight: 'bold',
   borderRadius: '8px',
   textTransform: 'none',
+  minWidth: '80px',
+  maxWidth: '180px',
   [theme.breakpoints.up('sm')]: {
     maxWidth: '180px',
   }
@@ -134,7 +131,6 @@ const Quiz: React.FC = () => {
         return;
       }
 
-      console.log('Loading questions from sheet:', subject);
       const fetchedQuestions = await getQuestionsFromSheet(subject);
       
       if (fetchedQuestions.length === 0) {
@@ -152,7 +148,6 @@ const Quiz: React.FC = () => {
       // 선택된 문제 수만큼만 가져오기
       const selectedQuestions = shuffledQuestions.slice(0, questionCount);
       
-      console.log(`Loaded and shuffled ${questionCount} questions:`, selectedQuestions);
       setQuestions(selectedQuestions);
       setCurrentQuestionIndex(0);
       setSelectedAnswer('');
@@ -160,7 +155,6 @@ const Quiz: React.FC = () => {
       setShowAnswer(false);
       setIsCorrect(null);
     } catch (err) {
-      console.error('Error loading questions:', err);
       setError('문제를 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
@@ -254,8 +248,139 @@ const Quiz: React.FC = () => {
 
   if (questions.length === 0) {
     return (
-      <Container>
-        <Alert severity="info">이 과목에는 아직 문제가 없습니다.</Alert>
+      <Container 
+        maxWidth="lg"
+        disableGutters
+        sx={{ 
+          py: 4,
+          bgcolor: '#F8F7F4',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          px: 2,
+          width: '100vw',
+          position: 'fixed',
+          left: 0,
+          overflowY: 'auto',
+          overflowX: 'hidden'
+        }}
+      >
+        <Box 
+          sx={{ 
+            width: '100%',
+            maxWidth: '600px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: '100%',
+            pb: '80px',
+            position: 'relative'
+          }}
+        >
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center',
+            mb: 2
+          }}>
+            <Box sx={{ 
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 1,
+              px: 4,
+              py: 1
+            }}>
+              <Box 
+                component="img"
+                src="/logo.png"
+                alt="로고"
+                onClick={handleHome}
+                sx={{
+                  width: isMobile ? '60px' : '80px',
+                  height: 'auto',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    opacity: 0.8
+                  }
+                }}
+              />
+              <Typography 
+                variant={isMobile ? "h6" : "h5"} 
+                sx={{ 
+                  color: '#103A5A',
+                  fontWeight: 'bold',
+                  fontSize: isMobile ? '1rem' : '1.25rem',
+                  ml: 4
+                }}
+              >
+                {subject}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Paper 
+            elevation={3}
+            sx={{ 
+              flex: 1,
+              p: 3,
+              pt: 2,
+              borderRadius: 2,
+              bgcolor: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 'calc(100vh - 150px)',
+              height: 'calc(100vh - 150px)',
+              maxHeight: 'calc(100vh - 150px)',
+              overflow: 'hidden',
+              width: '100%',
+              maxWidth: '600px',
+              margin: '0 auto'
+            }}
+          >
+            <Box sx={{ 
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              gap: 3
+            }}>
+              <Alert 
+                severity="info" 
+                sx={{ 
+                  width: '100%',
+                  '& .MuiAlert-message': {
+                    fontSize: '1.1rem',
+                    textAlign: 'center',
+                    width: '100%'
+                  }
+                }}
+              >
+                이 과목에는 아직 문제가 없습니다.
+              </Alert>
+              <Button
+                variant="contained"
+                onClick={handleHome}
+                sx={{
+                  bgcolor: '#103A5A',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: '#0a2647'
+                  },
+                  width: '100%',
+                  maxWidth: '200px',
+                  height: '48px',
+                  fontSize: '1.1rem'
+                }}
+              >
+                홈으로 가기
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
       </Container>
     );
   }
@@ -268,18 +393,18 @@ const Quiz: React.FC = () => {
       maxWidth="lg"
       disableGutters
       sx={{ 
-        py: 4,
+        py: { xs: 2, sm: 4 },
         bgcolor: '#F8F7F4',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        px: 2,
-        width: '100vw',  // 전체 화면 너비
-        position: 'fixed',  // 고정 위치
-        left: 0,  // 왼쪽 정렬
-        overflowY: 'auto',  // 세로 스크롤만 허용
-        overflowX: 'hidden'  // 가로 스크롤 방지
+        px: { xs: 1, sm: 2 },
+        width: '100vw',
+        position: 'fixed',
+        left: 0,
+        overflowY: 'auto',
+        overflowX: 'hidden'
       }}
     >
       <Box 
@@ -289,16 +414,18 @@ const Quiz: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          height: '100%',
-          pb: '80px',
-          position: 'relative'  // 상대 위치
+          minHeight: '100vh',
+          position: 'relative',
+          margin: '0 auto',
+          px: 0
         }}
       >
         <Box sx={{ 
           display: 'flex', 
           flexDirection: 'column',
           alignItems: 'center',
-          mb: 2
+          mb: { xs: 1, sm: 2 },
+          width: '100%'
         }}>
           <Box sx={{ 
             width: '100%',
@@ -306,7 +433,7 @@ const Quiz: React.FC = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             mb: 1,
-            px: 4,
+            px: { xs: 2, sm: 4 },
             py: 1
           }}>
             <Box 
@@ -315,7 +442,7 @@ const Quiz: React.FC = () => {
               alt="로고"
               onClick={handleHome}
               sx={{
-                width: isMobile ? '60px' : '80px',
+                width: { xs: '50px', sm: '60px', md: '80px' },
                 height: 'auto',
                 cursor: 'pointer',
                 '&:hover': {
@@ -328,8 +455,8 @@ const Quiz: React.FC = () => {
               sx={{ 
                 color: '#103A5A',
                 fontWeight: 'bold',
-                fontSize: isMobile ? '1rem' : '1.25rem',
-                ml: 4
+                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.25rem' },
+                ml: { xs: 2, sm: 4 }
               }}
             >
               {subject}
@@ -341,24 +468,22 @@ const Quiz: React.FC = () => {
           elevation={3}
           sx={{ 
             flex: 1,
-            p: 3,
-            pt: 2,
+            p: { xs: 2, sm: 3 },
+            pt: { xs: 1.5, sm: 2 },
             borderRadius: 2,
             bgcolor: 'white',
             display: 'flex',
             flexDirection: 'column',
-            minHeight: 'calc(100vh - 150px)',
-            height: 'calc(100vh - 150px)',
-            maxHeight: 'calc(100vh - 150px)',
-            overflow: 'hidden',
-            width: '100%',  // 너비를 100%로 설정
-            maxWidth: '600px',  // 최대 너비를 600px로 제한
-            margin: '0 auto'  // 중앙 정렬
+            width: '100%',
+            maxWidth: '600px',
+            margin: '0 auto',
+            mb: 2,
+            minHeight: { xs: 'calc(100vh - 250px)', sm: 'calc(100vh - 280px)' }
           }}
         >
           <Box sx={{ 
-            mb: 2,  // 3에서 2로 줄임
-            height: '40px',  // 50px에서 40px로 줄임
+            mb: { xs: 1.5, sm: 2 },
+            height: { xs: '35px', sm: '40px' },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -371,7 +496,7 @@ const Quiz: React.FC = () => {
                 color: '#103A5A',
                 fontWeight: 'bold',
                 textAlign: 'center',
-                fontSize: isMobile ? '1rem' : '1.25rem',
+                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.25rem' },
                 mb: 0
               }}
             >
@@ -382,11 +507,11 @@ const Quiz: React.FC = () => {
           <Box sx={{ 
             display: 'flex',
             flexDirection: 'column',
-            height: 'calc(100% - 50px)'  // 전체 높이에서 문제 번호 영역 높이를 뺀 나머지
+            flex: 1
           }}>
             <Box sx={{ 
-              mb: 3,
-              maxHeight: '200px',  // 문제 텍스트 영역 최대 높이
+              mb: { xs: 2, sm: 3 },
+              maxHeight: { xs: '250px', sm: '300px' },
               overflowY: 'auto',
               '&::-webkit-scrollbar': {
                 width: '8px',
@@ -404,11 +529,12 @@ const Quiz: React.FC = () => {
                 variant="body1" 
                 sx={{ 
                   whiteSpace: 'pre-line',
-                  fontSize: isMobile ? '1rem' : '1.1rem',
+                  fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                   lineHeight: 1.6,
-                  wordBreak: 'break-word',  // 긴 단어도 자동으로 줄바꿈
-                  width: '100%',  // 너비를 100%로 설정
-                  maxWidth: '100%'  // 최대 너비를 100%로 제한
+                  wordBreak: 'break-word',
+                  width: '100%',
+                  maxWidth: '100%',
+                  p: { xs: 1, sm: 2 }
                 }}
               >
                 {formatQuestion(currentQuestion.question)}
@@ -453,7 +579,7 @@ const Quiz: React.FC = () => {
                                       : '#103A5A')
                                     : '#103A5A',
                                 },
-                                padding: '4px'  // 라디오 버튼 자체의 패딩 줄임
+                                padding: { xs: '2px', sm: '4px' }
                               }}
                             />
                           }
@@ -463,15 +589,15 @@ const Quiz: React.FC = () => {
                                 ((selectedAnswer.match(/[①②③④]/)?.[0] || '') === (currentQuestion.answer.match(/[①②③④]/)?.[0] || '') ? '#1976d2' : '#d32f2f')
                                 : '#103A5A',
                               fontWeight: showAnswer && selectedAnswer === option ? 'bold' : 'normal',
-                              fontSize: isMobile ? '1rem' : '1.1rem'
+                              fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' }
                             }}>
                               {option}
                             </Typography>
                           }
                           sx={{
-                            mb: 1,  // 2에서 1로 줄임
-                            ml: 0,  // 왼쪽 마진 제거
-                            mr: 0,  // 오른쪽 마진 제거
+                            mb: { xs: 0.5, sm: 1 },
+                            ml: 0,
+                            mr: 0,
                             '&:last-child': {
                               mb: 0
                             }
@@ -496,15 +622,15 @@ const Quiz: React.FC = () => {
                   InputProps={{
                     notched: false,
                     style: { 
-                      fontSize: isMobile ? '1rem' : '1.1rem',
+                      fontSize: isMobile ? '0.9rem' : '1rem'
                     }
                   }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
                         borderColor: '#103A5A',
-                        top: 0,  // 라벨을 위한 공간 제거
-                        legend: { display: 'none' }  // 라벨 공간 완전히 제거
+                        top: 0,
+                        legend: { display: 'none' }
                       },
                       '&:hover fieldset': {
                         borderColor: '#103A5A',
@@ -513,22 +639,27 @@ const Quiz: React.FC = () => {
                         borderColor: '#103A5A',
                       },
                       '& input': {
-                        fontSize: isMobile ? '1rem' : '1.1rem',
+                        fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
                         color: showAnswer ? 
                           (selectedAnswer === currentQuestion.answer ? '#1976d2' : '#d32f2f')
                           : 'inherit',
-                        padding: '14px'  // 패딩 조정
+                        padding: { xs: '12px', sm: '14px' }
                       }
                     },
                     '& .MuiInputLabel-root': {
-                      display: 'none'  // 라벨 완전히 숨기기
+                      display: 'none'
                     }
                   }}
                 />
               )}
 
               {showAnswer && (
-                <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(16, 58, 90, 0.05)', borderRadius: 1 }}>
+                <Box sx={{ 
+                  mt: { xs: 2, sm: 3 }, 
+                  p: { xs: 1.5, sm: 2 }, 
+                  bgcolor: 'rgba(16, 58, 90, 0.05)', 
+                  borderRadius: 1 
+                }}>
                   <Typography 
                     variant="body1" 
                     sx={{ 
@@ -536,17 +667,18 @@ const Quiz: React.FC = () => {
                       alignItems: 'center',
                       gap: 1,
                       color: isCorrect ? '#1976d2' : '#d32f2f',
-                      fontWeight: 'bold'
+                      fontWeight: 'bold',
+                      fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' }
                     }}
                   >
                     {isCorrect ? (
                       <>
-                        <CheckCircleIcon />
+                        <CheckCircleIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
                         정답입니다!
                       </>
                     ) : (
                       <>
-                        <CancelIcon />
+                        <CancelIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
                         오답입니다. 정답: {currentQuestion.answer}
                       </>
                     )}
@@ -556,58 +688,61 @@ const Quiz: React.FC = () => {
             </Box>
           </Box>
         </Paper>
-      </Box>
 
-      <ButtonContainer>
-        <ActionButton
-          variant="contained"
-          onClick={handlePrevious}
-          disabled={currentQuestionIndex === 0}
-          sx={{ 
-            bgcolor: '#103A5A',
-            '&:hover': {
-              bgcolor: '#0a2647'
-            },
-            '&:disabled': {
-              bgcolor: '#103A5A80'
-            }
-          }}
-        >
-          이전
-        </ActionButton>
-        <ActionButton
-          variant="contained"
-          onClick={handleCheckAnswer}
-          disabled={!selectedAnswer}
-          sx={{ 
-            bgcolor: '#103A5A',
-            '&:hover': {
-              bgcolor: '#0a2647'
-            },
-            '&:disabled': {
-              bgcolor: '#103A5A80'
-            }
-          }}
-        >
-          {showAnswer ? '다음 문제' : '정답 확인'}
-        </ActionButton>
-        <ActionButton
-          variant="contained"
-          onClick={currentQuestionIndex === questions.length - 1 ? handleHome : handleNext}
-          disabled={currentQuestionIndex === questions.length - 1 ? false : currentQuestionIndex === questions.length - 1}
-          sx={{ 
-            bgcolor: '#103A5A',
-            '&:hover': {
-              bgcolor: '#0a2647'
-            },
-            '&:disabled': {
-              bgcolor: '#103A5A80'
-            }
-          }}
-        >
-          {currentQuestionIndex === questions.length - 1 ? '다시풀기' : '다음'}
-        </ActionButton>
-      </ButtonContainer>
+        <ButtonContainer>
+          <ActionButton
+            variant="contained"
+            onClick={handlePrevious}
+            disabled={currentQuestionIndex === 0}
+            sx={{ 
+              bgcolor: '#103A5A',
+              '&:hover': {
+                bgcolor: '#0a2647'
+              },
+              '&:disabled': {
+                bgcolor: '#103A5A80'
+              },
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }}
+          >
+            이전
+          </ActionButton>
+          <ActionButton
+            variant="contained"
+            onClick={handleCheckAnswer}
+            disabled={!selectedAnswer}
+            sx={{ 
+              bgcolor: '#103A5A',
+              '&:hover': {
+                bgcolor: '#0a2647'
+              },
+              '&:disabled': {
+                bgcolor: '#103A5A80'
+              },
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }}
+          >
+            {showAnswer ? '다음 문제' : '정답 확인'}
+          </ActionButton>
+          <ActionButton
+            variant="contained"
+            onClick={currentQuestionIndex === questions.length - 1 ? handleHome : handleNext}
+            disabled={currentQuestionIndex === questions.length - 1 ? false : currentQuestionIndex === questions.length - 1}
+            sx={{ 
+              bgcolor: '#103A5A',
+              '&:hover': {
+                bgcolor: '#0a2647'
+              },
+              '&:disabled': {
+                bgcolor: '#103A5A80'
+              },
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }}
+          >
+            {currentQuestionIndex === questions.length - 1 ? '다시풀기' : '다음'}
+          </ActionButton>
+        </ButtonContainer>
+      </Box>
     </Container>
   );
 };
